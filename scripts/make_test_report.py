@@ -77,7 +77,9 @@ def main():
     lines += ["", "## 4. Not covered by automated tests", "",
               "- Webcam capture needs a physical camera and permission prompt, so it was not automated (the code path that feeds the captured frame into the same upload form is exercised by file upload).",
               "- Load and concurrency testing was not performed.",
-              "- The MySQL schema was checked by running the application against MySQL 9.2 (create tables, register, classify, alert, collect). The automated suite itself uses SQLite.",
+              "- The MySQL schema was checked by running the application against MySQL 9.2 (create tables, register, classify, alert, collect, cleanup via `scripts/demo_traffic.py`). The automated suite itself uses SQLite.",
+              "- Docker: the image builds, starts, passes its health check, runs as a non-root user and classifies real images with the bundled model (verified manually, SQLite fallback inside the container). The `docker-compose.yml` file validates (`docker compose config`), but the full stack with the `mysql:8.4` service was not started because the image was not available locally.",
+              "- GitHub Actions (`.github/workflows/ci.yml`) has not run yet because the repository has not been pushed to GitHub.",
               "- Accuracy on photos from outside the training dataset (cluttered scenes, other bins) is unknown; see the data limitations in `docs/MODEL_REPORT.md`."]
     (ROOT / "docs" / "TESTING.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote docs/TESTING.md: {summary}")
