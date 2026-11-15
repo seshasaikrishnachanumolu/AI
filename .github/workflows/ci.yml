@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      # TensorFlow is imported lazily and the tests stub the classifier, so it is not needed here.
+      - name: Install dependencies
+        run: |
+          grep -viE '^(tensorflow)' requirements.txt > ci-requirements.txt
+          pip install -r ci-requirements.txt pytest
+      - name: Run tests
+        run: python -m pytest -q
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t smartwaste-ai .

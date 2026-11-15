@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Live dashboard{% endblock %}
+{% block topbar_extra %}<span class="live" id="live"><span class="dot"></span><span id="live-txt">Connecting…</span></span>{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Operations dashboard</h1>
+    <p class="muted">Figures are calculated from stored records and refresh automatically. Bin fullness is simulated.</p></div>
+  <a class="btn secondary" href="{{ url_for('admin.export_csv') }}">{{ icon('download', 16) }} Export CSV</a>
+</div>
+
+<div class="grid">
+  <div class="stat" data-k="total"><span class="ico">{{ icon('layers', 22) }}</span><div><div class="num">{{ stats.total }}</div><div class="lbl">Total waste items detected</div></div></div>
+  <div class="stat" data-k="recyclable"><span class="ico">{{ icon('recycle', 22) }}</span><div><div class="num">{{ stats.recyclable }}</div><div class="lbl">Recyclable waste</div></div></div>
+  <div class="stat danger" data-k="non_recyclable"><span class="ico">{{ icon('leaf', 22) }}</span><div><div class="num">{{ stats.non_recyclable }}</div><div class="lbl">Non-recyclable waste</div></div></div>
+  <div class="stat" data-k="bins_total"><span class="ico">{{ icon('trash', 22) }}</span><div><div class="num">{{ stats.bins_total }}</div><div class="lbl">Total virtual bins</div></div></div>
+  <div class="stat" data-k="bins_normal"><span class="ico">{{ icon('check', 22) }}</span><div><div class="num">{{ stats.bins_normal }}</div><div class="lbl">Normal bins</div></div></div>
+  <div class="stat warn" data-k="bins_almost"><span class="ico">{{ icon('alert', 22) }}</span><div><div class="num">{{ stats.bins_almost }}</div><div class="lbl">Almost-full bins</div></div></div>
+  <div class="stat danger" data-k="bins_collect"><span class="ico">{{ icon('truck', 22) }}</span><div><div class="num">{{ stats.bins_collect }}</div><div class="lbl">Collection-required bins</div></div></div>
+  <div class="stat warn" data-k="open_alerts"><span class="ico">{{ icon('bell', 22) }}</span><div><div class="num">{{ stats.open_alerts }}</div><div class="lbl">Open alerts</div></div></div>
+</div>
+
+<div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))">
+  {% for cat, n in stats.categories.items() %}
+  <div class="stat cat" data-k="cat-{{ cat }}"><span class="ico" data-k="{{ cat }}">{{ icon('recycle', 20) }}</span><div><div class="num">{{ n }}</div><div class="lbl">{{ cat|capitalize }} waste</div></div></div>
+  {% endfor %}
+</div>
+
+<div class="two-col">
+  <div class="card"><div class="card-head"><h2>Waste by category</h2></div><div class="chart-box"><canvas id="catChart"></canvas></div></div>
+  <div class="card"><div class="card-head"><h2>Live activity</h2></div>
+    <ul class="feed" id="feed"><li class="empty">Waiting for activity…</li></ul></div>
+</div>
+
+<div class="card">
+  <div class="card-head"><h2>Virtual smart bins</h2><a href="{{ url_for('admin.bins') }}" class="small">Manage bins</a></div>
+  <div class="bin-grid" id="bins"><div class="empty">Loading bins…</div></div>
+</div>
+
+<div class="card">
+  <div class="card-head"><h2>Open alerts</h2><a href="{{ url_for('admin.alerts') }}" class="small">All alerts</a></div>
+  <ul class="feed" id="alerts"><li class="empty">No open alerts.</li></ul>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

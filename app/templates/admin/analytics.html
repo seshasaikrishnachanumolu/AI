@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Waste analytics and reports</h1><p class="muted">Statistics are computed from stored classification records.</p></div>
+  <a class="btn secondary" href="{{ url_for('admin.export_csv') }}">{{ icon('download', 16) }} Export CSV</a></div>
+<div class="tabs">
+  <button data-p="daily" class="active">Daily (7 days)</button>
+  <button data-p="weekly">Weekly (8 weeks)</button>
+  <button data-p="monthly">Monthly (12 months)</button>
+</div>
+<p id="empty" class="muted" style="display:none">No classified items in this period yet.</p>
+<div class="card"><h2>Items per period, by category</h2><div class="chart-box"><canvas id="timeChart"></canvas></div></div>
+<div class="grid wide">
+  <div class="card"><h2>Category-wise</h2><div class="chart-box"><canvas id="catChart"></canvas></div></div>
+  <div class="card"><h2>Location-wise</h2><div class="chart-box"><canvas id="locChart"></canvas></div></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}

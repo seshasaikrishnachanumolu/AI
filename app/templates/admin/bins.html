@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "admin/_macros.html" import status_badge, bar, post_btn with context %}
+{% block title %}Smart bins{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Virtual smart bins</h1><p class="muted">Each bin has one compartment per waste category. Capacity and load are simulated.</p></div></div>
+
+<div class="card">
+  <h2>Add a bin</h2>
+  <form method="post" class="row">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div><label>Name</label><input name="name" maxlength="100" required placeholder="e.g. Library Bin 2"></div>
+    <div><label>Location</label>
+      <select name="location_id" required>{% for l in locations %}<option value="{{ l.id }}">{{ l.name }}</option>{% endfor %}</select></div>
+    <div><label>Capacity per compartment (L)</label>
+      <input name="capacity" type="number" step="0.1" min="0.1" value="{{ default_capacity }}"></div>
+    <div><button class="btn" type="submit">Create bin</button></div>
+  </form>
+</div>
+
+<div class="table-wrap"><table>
+  <thead><tr><th>Bin</th><th>Location</th><th style="min-width:180px">Highest compartment fill</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for b in bins %}
+  <tr>
+    <td><a href="{{ url_for('admin.bin_detail', bin_id=b.id) }}"><b>{{ b.name }}</b></a></td>
+    <td>{{ b.location.name }}</td>
+    <td>{{ bar(b.max_fill_percent) }}<span class="small muted">{{ b.max_fill_percent }}%</span></td>
+    <td>{{ status_badge(b.status(ALMOST_FULL, ALERT)) }}</td>
+    <td>{{ post_btn(url_for('admin.collect', bin_id=b.id), 'Mark collected', 'secondary') }}</td>
+  </tr>
+  {% else %}<tr><td colspan="5" class="empty">No bins yet.</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

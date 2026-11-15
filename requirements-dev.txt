@@ -1,0 +1,7 @@
+# Development / training / testing / documentation tools
+-r requirements.txt
+scikit-learn>=1.4
+matplotlib>=3.8
+pytest>=8.0
+playwright>=1.44
+python-pptx>=1.0

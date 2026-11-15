@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Overview{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Hello, {{ current_user.name.split(' ')[0] }}</h1><p class="muted">Your contribution to a cleaner campus.</p></div>
+  <a class="btn" href="{{ url_for('main.classify_page') }}">{{ icon('camera', 16) }} Classify waste</a></div>
+
+<div class="grid">
+  <div class="stat"><span class="ico">{{ icon('layers', 22) }}</span><div><div class="num">{{ total }}</div><div class="lbl">Items classified</div></div></div>
+  <div class="stat"><span class="ico">{{ icon('recycle', 22) }}</span><div><div class="num">{{ recyclable }}</div><div class="lbl">Recyclable items</div></div></div>
+  <div class="stat info"><span class="ico">{{ icon('leaf', 22) }}</span><div><div class="num">{{ ((recyclable / total * 100)|round|int) if total else 0 }}%</div><div class="lbl">Recyclable share</div></div></div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="card-head"><h2>Recent classifications</h2><a href="{{ url_for('main.history') }}" class="small">View all</a></div>
+    {% if recent %}
+    <ul class="feed">
+      {% for r in recent %}
+      <li><span class="pill {{ r.category }}">{{ r.category }}</span> <span>{{ r.confidence }}% confidence{% if r.bin %} · {{ r.bin.location.name }}{% endif %}</span>
+        <a class="t" href="{{ url_for('main.result', record_id=r.id) }}">{{ r.created_at|dt }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}<div class="empty">Nothing yet. Classify your first item to see it here.</div>{% endif %}
+  </div>
+  <div class="card">
+    <h2>By category</h2>
+    {% set mx = categories.values()|max if categories else 0 %}
+    {% for c, n in categories.items() %}
+      <div class="mini"><span class="nm">{{ c }}</span>
+        <div class="progress"><span style="width: {{ (n / mx * 100) if mx else 0 }}%; background: var(--c-{{ c }})"></span></div>
+        <span class="v">{{ n }}</span></div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

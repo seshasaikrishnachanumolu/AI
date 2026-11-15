@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set public = true %}
+{% set main_class = 'landing' %}
+{% set own_flashes = true %}
+{% block title %}Admin login{% endblock %}
+{% block content %}
+<div class="auth">
+  <div class="side">
+    <h2>Operations console</h2>
+    <p>Monitor every virtual bin in real time.</p>
+    <ul>
+      <li>{{ icon('activity', 18) }} Live fill levels and activity feed</li>
+      <li>{{ icon('bell', 18) }} Capacity alerts at 90%</li>
+      <li>{{ icon('truck', 18) }} Collection tracking and history</li>
+      <li>{{ icon('chart', 18) }} Analytics and CSV reports</li>
+    </ul>
+  </div>
+  <div class="formbox"><div class="inner">
+    <h1>Admin login</h1>
+    <p class="muted">Restricted to administrators.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}" role="alert">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="email">Admin email</label>
+      <input id="email" type="email" name="email" value="{{ email or '' }}" required autofocus autocomplete="username">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required autocomplete="current-password">
+      <button class="btn lg dark" type="submit">Sign in to console</button>
+    </form>
+    <p class="small" style="margin-top:1.2rem"><a href="{{ url_for('auth.login') }}">User login</a></p>
+  </div></div>
+</div>
+{% endblock %}

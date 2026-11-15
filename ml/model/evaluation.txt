@@ -1,0 +1,20 @@
+Test accuracy: 0.8720 (984 images)
+
+              precision    recall  f1-score   support
+
+       glass      0.926     0.825     0.872       302
+       metal      0.714     0.826     0.766       115
+     organic      0.893     0.966     0.928       147
+       paper      0.955     0.938     0.946       291
+     plastic      0.723     0.767     0.744       129
+
+    accuracy                          0.872       984
+   macro avg      0.842     0.864     0.851       984
+weighted avg      0.878     0.872     0.873       984
+
+Confusion matrix:
+[[249  20  11   4  18]
+ [  3  95   1   1  15]
+ [  1   0 142   2   2]
+ [  2  10   3 273   3]
+ [ 14   8   2   6  99]]

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Locations{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Locations</h1><p class="muted">Places where virtual bins are installed.</p></div></div>
+<div class="card">
+  <h2>Add a location</h2>
+  <form method="post" class="row">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div><label>Name</label><input name="name" maxlength="100" required></div>
+    <div><label>Description</label><input name="description" maxlength="255"></div>
+    <div><button class="btn" type="submit">Add location</button></div>
+  </form>
+</div>
+<div class="table-wrap"><table>
+  <thead><tr><th>Location</th><th>Description</th><th>Bins</th></tr></thead><tbody>
+  {% for l in locations %}<tr><td><b>{{ l.name }}</b></td><td>{{ l.description or '' }}</td><td>{{ l.bins|length }}</td></tr>
+  {% else %}<tr><td colspan="3" class="empty">No locations.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

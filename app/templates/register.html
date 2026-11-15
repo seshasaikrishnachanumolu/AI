@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set public = true %}
+{% set main_class = 'landing' %}
+{% set own_flashes = true %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<div class="auth">
+  <div class="side">
+    <h2>Join SmartWaste AI</h2>
+    <p>Help your campus recycle better, one photo at a time.</p>
+    <ul>
+      <li>{{ icon('check', 18) }} Classify plastic, paper, metal, glass and organic waste</li>
+      <li>{{ icon('check', 18) }} Items are routed to virtual smart bins automatically</li>
+      <li>{{ icon('check', 18) }} Free to use. Your uploads stay private to you and admins</li>
+    </ul>
+  </div>
+  <div class="formbox"><div class="inner">
+    <h1>Create your account</h1>
+    <p class="muted">It takes less than a minute.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}" role="alert">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="name">Full name</label>
+      <input id="name" name="name" value="{{ name or '' }}" maxlength="100" required autocomplete="name">
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" value="{{ email or '' }}" required autocomplete="email">
+      <label for="password">Password <span class="muted small">(min 8 characters)</span></label>
+      <input id="password" type="password" name="password" minlength="8" required autocomplete="new-password">
+      <label for="confirm">Confirm password</label>
+      <input id="confirm" type="password" name="confirm" minlength="8" required autocomplete="new-password">
+      <button class="btn lg" type="submit">Create account</button>
+    </form>
+    <p class="small" style="margin-top:1.2rem">Already registered? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+  </div></div>
+</div>
+{% endblock %}

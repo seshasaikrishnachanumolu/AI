@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set public = true %}
+{% set main_class = 'landing' %}
+{% block title %}AI Smart Waste Management{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">{{ icon('cpu', 15) }} CNN-powered waste classification</span>
+      <h1>Smarter campuses start with <em>smarter waste</em>.</h1>
+      <p class="lead">Snap or upload a photo of any waste item. Our deep-learning model identifies the material, gives disposal guidance,
+        and routes it to the right compartment of a virtual smart bin, while administrators watch capacity, alerts and collections update live.</p>
+      <div class="cta">
+        {% if current_user.is_authenticated %}
+          <a class="btn lg" href="{{ url_for('main.dashboard') }}">Open dashboard {{ icon('arrow', 18) }}</a>
+        {% else %}
+          <a class="btn lg" href="{{ url_for('auth.register') }}">Get started free {{ icon('arrow', 18) }}</a>
+          <a class="btn lg ghost" href="{{ url_for('auth.login') }}">Log in</a>
+        {% endif %}
+      </div>
+      <p class="note">Bin fullness is simulated from configured capacity and estimated waste volume. No physical sensors are used.</p>
+    </div>
+    <div class="mock" aria-label="Illustrative example of a classification result">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="res">
+        <div class="muted small">Predicted category (illustrative example)</div>
+        <div class="cat">Plastic</div>
+        <div class="row" style="margin-top:.6rem;align-items:center">
+          <div style="flex:2"><div class="progress"><span style="width:94%"></span></div></div>
+          <b style="flex:0 0 auto">94% confidence</b>
+        </div>
+        <p class="small muted" style="margin:.7rem 0 0">Rinse the item and place it in the plastic compartment.</p>
+      </div>
+      <div class="lane">{{ icon('trash', 16) }} Canteen Bin 1 · plastic <div class="progress"><span style="width:62%"></span></div> 62%</div>
+      <div class="lane">{{ icon('bell', 16) }} Alert fires at 90% · collection requested automatically</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap stats-strip">
+  <div class="box" id="public-stats">
+    <div class="it"><div class="v" data-s="items">0</div><div class="l">Items classified</div></div>
+    <div class="it"><div class="v" data-s="bins">0</div><div class="l">Virtual smart bins</div></div>
+    <div class="it"><div class="v" data-s="locations">0</div><div class="l">Campus locations</div></div>
+    <div class="it"><div class="v"><span data-s="recyclable_pct">0</span>%</div><div class="l">Recyclable share</div></div>
+  </div>
+</div>
+
+<section class="section wrap" id="features">
+  <h2 class="big">Everything you need to run smart waste operations</h2>
+  <p class="sub">From a photo to a collection schedule: one connected workflow for students, staff and facility admins.</p>
+  <div class="feat">
+    <div class="f"><div class="ico">{{ icon('camera', 22) }}</div><h3>AI image classification</h3><p>Upload or capture with your webcam. A trained CNN returns the category and a confidence score in a moment.</p></div>
+    <div class="f"><div class="ico">{{ icon('trash', 22) }}</div><h3>Virtual smart bins</h3><p>Multiple bins across locations, each with separate compartments per waste category.</p></div>
+    <div class="f"><div class="ico">{{ icon('activity', 22) }}</div><h3>Live monitoring</h3><p>The admin dashboard refreshes every few seconds with fill levels, new items and alerts. No page reload needed.</p></div>
+    <div class="f"><div class="ico">{{ icon('bell', 22) }}</div><h3>Automatic alerts</h3><p>When a compartment reaches 90% of its configured capacity, an alert and a collection request are created.</p></div>
+    <div class="f"><div class="ico">{{ icon('truck', 22) }}</div><h3>Collection management</h3><p>Track pending and completed collections, mark bins collected, and reset capacity with a full audit trail.</p></div>
+    <div class="f"><div class="ico">{{ icon('chart', 22) }}</div><h3>Analytics and reports</h3><p>Daily, weekly and monthly trends, location and category breakdowns, plus CSV export.</p></div>
+    <div class="f"><div class="ico">{{ icon('shield', 22) }}</div><h3>Secure by design</h3><p>Hashed passwords, CSRF protection, role-based access, validated uploads and private image storage.</p></div>
+    <div class="f"><div class="ico">{{ icon('database', 22) }}</div><h3>Real records only</h3><p>Every dashboard number is calculated from stored application records. Nothing is fabricated.</p></div>
+  </div>
+</section>
+
+<section class="section wrap" id="how">
+  <h2 class="big">How it works</h2>
+  <p class="sub">Four steps from a piece of waste to a collected bin.</p>
+  <div class="steps">
+    <div class="s"><h3>1. Capture</h3><p>Choose a disposal location and upload a photo or take one with your webcam.</p></div>
+    <div class="s"><h3>2. Classify</h3><p>The CNN predicts plastic, paper, metal, glass or organic with a confidence percentage.</p></div>
+    <div class="s"><h3>3. Route</h3><p>The item is assigned to the matching compartment of a bin at that location and its simulated fill level rises.</p></div>
+    <div class="s"><h3>4. Collect</h3><p>Admins see almost-full bins, get alerts at 90%, collect, and reset capacity.</p></div>
+  </div>
+  <div class="cats" style="margin-top:2rem">
+    <span class="c"><i style="background:var(--c-plastic)"></i>Plastic</span>
+    <span class="c"><i style="background:var(--c-paper)"></i>Paper</span>
+    <span class="c"><i style="background:var(--c-metal)"></i>Metal</span>
+    <span class="c"><i style="background:var(--c-glass)"></i>Glass</span>
+    <span class="c"><i style="background:var(--c-organic)"></i>Organic</span>
+  </div>
+</section>
+
+<section class="section wrap" id="tech">
+  <h2 class="big">Built with</h2>
+  <p class="sub">A production-style stack, from model training to monitoring.</p>
+  <div class="tech">
+    <span>Python 3</span><span>Flask</span><span>TensorFlow / Keras CNN</span><span>OpenCV</span><span>MySQL</span>
+    <span>SQLAlchemy</span><span>Chart.js</span><span>HTML · CSS · JavaScript</span><span>Waitress</span>
+  </div>
+  <div class="cta-band">
+    <h2>Ready to see your waste data come alive?</h2>
+    <p>Create an account and classify your first item in under a minute.</p>
+    {% if current_user.is_authenticated %}
+      <a class="btn lg" href="{{ url_for('main.dashboard') }}">Open dashboard</a>
+    {% else %}
+      <a class="btn lg" href="{{ url_for('auth.register') }}">Create free account</a>
+    {% endif %}
+  </div>
+</section>
+
+<footer class="pub-foot"><div class="wrap">
+  <div><b>SmartWaste AI</b><br>AI-Powered Smart Waste Management and Monitoring System</div>
+  <div>Bin fullness is simulated from configured capacity and estimated volume.<br>
+    <a href="{{ url_for('auth.admin_login') }}" style="color:#86efac">Admin login</a> · <a href="{{ url_for('main.health') }}" style="color:#86efac">System status</a></div>
+</div></footer>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/landing.js') }}"></script>{% endblock %}

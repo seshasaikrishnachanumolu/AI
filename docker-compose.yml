@@ -1,0 +1,45 @@
+# Run the whole system (web app + MySQL) with one command:
+#   docker compose up --build
+# Then open http://localhost:8000
+# Required: SECRET_KEY (in .env or the shell). Optional: DB_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD.
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: smart_waste
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-smartwaste_dev_pw}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env or your shell}
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${DB_PASSWORD:-smartwaste_dev_pw}
+      MYSQL_HOST: db
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: smart_waste
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@smartwaste.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@12345}
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads:/app/uploads
+      - logs:/app/logs
+
+volumes:
+  dbdata:
+  uploads:
+  logs:

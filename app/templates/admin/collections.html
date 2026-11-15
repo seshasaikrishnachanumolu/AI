@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% from "admin/_macros.html" import status_badge, bar, post_btn with context %}
+{% block title %}Collections{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Waste collection management</h1><p class="muted">Track pending and completed collections. Marking a bin collected resets its simulated capacity.</p></div></div>
+
+<div class="card">
+  <div class="card-head"><h2>Pending collections ({{ pending|length }})</h2></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bin</th><th>Location</th><th style="min-width:170px">Max fill</th><th>Requested (UTC)</th><th></th></tr></thead><tbody>
+    {% for p in pending %}
+    <tr>
+      <td><a href="{{ url_for('admin.bin_detail', bin_id=p.bin.id) }}"><b>{{ p.bin.name }}</b></a></td>
+      <td>{{ p.bin.location.name }}</td>
+      <td>{{ bar(p.bin.max_fill_percent) }}<span class="small muted">{{ p.bin.max_fill_percent }}%</span></td>
+      <td>{{ p.requested_at|dt }}</td>
+      <td>{{ post_btn(url_for('admin.collect', bin_id=p.bin.id), 'Mark collected') }}</td>
+    </tr>
+    {% else %}<tr><td colspan="5" class="empty">No pending collections.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+
+{% if needing %}
+<div class="card">
+  <h2>Almost-full bins without a collection request</h2>
+  <div class="table-wrap"><table><tbody>
+    {% for b in needing %}
+    <tr><td><b>{{ b.name }}</b></td><td>{{ b.location.name }}</td><td>{{ b.max_fill_percent }}%</td>
+      <td>{{ status_badge(b.status(ALMOST_FULL, ALERT)) }}</td>
+      <td>{{ post_btn(url_for('admin.request_collection', bin_id=b.id), 'Request collection', 'secondary') }}</td></tr>
+    {% endfor %}
+  </tbody></table></div>
+</div>
+{% endif %}
+
+<div class="card">
+  <h2>Completed collections (latest 50)</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Bin</th><th>Location</th><th>Collected at (UTC)</th><th>By</th><th>Volume (simulated L)</th></tr></thead><tbody>
+    {% for c in completed %}
+    <tr><td>{{ c.bin.name }}</td><td>{{ c.bin.location.name }}</td><td>{{ c.collected_at|dt }}</td>
+      <td>{{ c.collector.name if c.collector else '-' }}</td><td>{{ c.volume_collected }}</td></tr>
+    {% else %}<tr><td colspan="5" class="empty">No completed collections yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+{% endblock %}

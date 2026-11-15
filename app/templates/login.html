@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% set public = true %}
+{% set main_class = 'landing' %}
+{% set own_flashes = true %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<div class="auth">
+  <div class="side">
+    <h2>Welcome back</h2>
+    <p>Classify waste in seconds and keep your campus bins under control.</p>
+    <ul>
+      <li>{{ icon('check', 18) }} Instant AI classification with confidence score</li>
+      <li>{{ icon('check', 18) }} Disposal guidance for every item</li>
+      <li>{{ icon('check', 18) }} Personal history of everything you've classified</li>
+    </ul>
+  </div>
+  <div class="formbox"><div class="inner">
+    <h1>Log in</h1>
+    <p class="muted">Use your SmartWaste AI account.</p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}" role="alert">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" value="{{ email or '' }}" required autofocus autocomplete="email">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required autocomplete="current-password">
+      <button class="btn lg" type="submit">Log in</button>
+    </form>
+    <p class="small" style="margin-top:1.2rem">New here? <a href="{{ url_for('auth.register') }}">Create an account</a> ·
+       <a href="{{ url_for('auth.admin_login') }}">Admin login</a></p>
+  </div></div>
+</div>
+{% endblock %}

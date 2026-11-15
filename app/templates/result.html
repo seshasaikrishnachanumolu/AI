@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Classification result</h1><p class="muted">{{ r.created_at|dt }} UTC</p></div>
+  <div><a class="btn" href="{{ url_for('main.classify_page') }}">{{ icon('camera', 16) }} Classify another</a>
+  <a class="btn secondary" href="{{ url_for('main.history') }}">My history</a></div></div>
+<div class="card"><div class="result-grid">
+  <img src="{{ url_for('main.uploaded_file', filename=r.image_filename) }}" alt="Uploaded waste">
+  <div>
+    <div class="res-top">
+      <div class="ring" style="--brand: var(--c-{{ r.category }}); --p: {{ r.confidence }}"><span>{{ r.confidence|round|int }}%</span></div>
+      <div>
+        <div class="muted small">Predicted category</div>
+        <div class="big-cat">{{ r.category }}</div>
+        <span class="badge {{ '' if r.is_recyclable else 'almost' }}" style="margin-top:.5rem">{{ 'Recyclable' if r.is_recyclable else 'Non-recyclable (compostable / general)' }}</span>
+      </div>
+    </div>
+    <div class="tip"><b>Disposal recommendation</b><br>{{ r.recommendation }}</div>
+    <p style="margin-top:1rem"><b>Assigned to:</b>
+      {% if r.bin %}{{ r.bin.name }} ({{ r.bin.location.name }}), {{ r.category }} compartment
+      {% else %}<span class="badge full">No space</span> no bin had room at that location{% endif %}</p>
+  </div>
+</div></div>
+{% endblock %}

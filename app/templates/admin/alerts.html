@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "admin/_macros.html" import post_btn with context %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Capacity alerts</h1>
+  <p class="muted">Raised when a compartment reaches {{ ALERT }}% of its configured capacity (simulated).</p></div></div>
+<div class="table-wrap"><table>
+  <thead><tr><th>Message</th><th>Raised (UTC)</th><th>Status</th><th></th></tr></thead><tbody>
+  {% for a in alerts %}
+  <tr>
+    <td>{{ a.message }}</td><td>{{ a.created_at|dt }}</td>
+    <td>{% if a.resolved %}<span class="badge muted">Resolved</span>{% else %}<span class="badge full">Open</span>{% endif %}</td>
+    <td>{% if not a.resolved %}{{ post_btn(url_for('admin.resolve_alert', alert_id=a.id), 'Resolve', 'secondary') }}{% endif %}</td>
+  </tr>
+  {% else %}<tr><td colspan="4" class="empty">No alerts.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

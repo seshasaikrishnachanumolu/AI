@@ -1,0 +1,146 @@
+{
+  "passed": 28,
+  "total": 28,
+  "results": [
+    {
+      "test": "Landing page renders hero and features",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Health endpoint reports database up",
+      "passed": true,
+      "detail": "{'database': 'up', 'status': 'ok'}"
+    },
+    {
+      "test": "Anonymous user is redirected to login",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Anonymous user cannot open admin area",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Registration rejects mismatched passwords",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Registration succeeds",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Login rejects a wrong password",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Login succeeds and opens user overview",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Normal user is forbidden from the admin area",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Classify form validates a missing location",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Image classified by the model with confidence and bin assignment",
+      "passed": true,
+      "detail": "glass 56%"
+    },
+    {
+      "test": "Invalid file type is rejected with a clear message",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "History lists the classified image",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Admin login rejects a wrong password",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Live dashboard connected",
+      "passed": true,
+      "detail": "Live \u00b7 updated 2:31:31 pm"
+    },
+    {
+      "test": "Dashboard updated in real time without reload",
+      "passed": true,
+      "detail": "1 -> 13"
+    },
+    {
+      "test": "Activity feed shows new items",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Admin can create a location and a bin with custom capacity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Alert raised when a compartment reaches 90% of capacity",
+      "passed": true,
+      "detail": "after 5 items"
+    },
+    {
+      "test": "Collection request created automatically",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Admin can mark the bin collected",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Capacity reset to 0% after collection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Alert resolved after collection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Completed collection stored with date and time",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Analytics charts render",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "CSV export downloads records",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "Mobile layout has no horizontal overflow",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "No JavaScript errors, failed requests or 5xx responses",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

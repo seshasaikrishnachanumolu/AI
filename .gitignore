@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+instance/
+uploads/
+data/
+.pytest_cache/
+logs/
+tmp_ui/
+ml/model/waste_cnn_*.keras
+uploads_test/

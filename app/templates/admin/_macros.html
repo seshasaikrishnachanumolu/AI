@@ -1,0 +1,14 @@
+{% macro status_badge(status) %}
+  <span class="badge {{ 'full' if status == 'Collection Required' else ('almost' if status == 'Almost Full' else '') }}">{{ status }}</span>
+{% endmacro %}
+
+{% macro bar(pct) %}
+  <div class="progress" title="{{ pct }}%"><span class="{{ 'full' if pct >= ALERT else ('almost' if pct >= ALMOST_FULL else '') }}" style="width: {{ pct }}%"></span></div>
+{% endmacro %}
+
+{% macro post_btn(url, label, cls='') %}
+  <form method="post" action="{{ url }}" class="inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn small {{ cls }}" type="submit">{{ label }}</button>
+  </form>
+{% endmacro %}

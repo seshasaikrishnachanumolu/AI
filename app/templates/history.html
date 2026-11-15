@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_icons.html" import icon %}
+{% block title %}My history{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>My waste history</h1><p class="muted">Everything you've classified, with confidence and disposal advice.</p></div>
+  <a class="btn" href="{{ url_for('main.classify_page') }}">{{ icon('camera', 16) }} Classify waste</a></div>
+{% if pagination.items %}
+<div class="thumbs">
+  {% for r in pagination.items %}
+  <a class="card" href="{{ url_for('main.result', record_id=r.id) }}" style="text-decoration:none;color:inherit">
+    <img src="{{ url_for('main.uploaded_file', filename=r.image_filename) }}" alt="{{ r.category }}" loading="lazy">
+    <div class="body">
+      <span class="pill {{ r.category }}">{{ r.category }}</span> <b>{{ r.confidence }}%</b>
+      <div class="muted small">{{ r.created_at|dt }} UTC{% if r.bin %} · {{ r.bin.location.name }}{% endif %}</div>
+      <p class="muted small" style="margin:.5rem 0 0">{{ r.recommendation }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+<div class="pager">
+  {% if pagination.has_prev %}<a class="btn secondary small" href="{{ url_for('main.history', page=pagination.prev_num) }}">&larr; Newer</a>{% endif %}
+  <span class="muted">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+  {% if pagination.has_next %}<a class="btn secondary small" href="{{ url_for('main.history', page=pagination.next_num) }}">Older &rarr;</a>{% endif %}
+</div>
+{% else %}
+<div class="card empty">{{ icon('leaf', 40) }}<p>No classifications yet.</p><a class="btn" href="{{ url_for('main.classify_page') }}">Classify your first item</a></div>
+{% endif %}
+{% endblock %}
