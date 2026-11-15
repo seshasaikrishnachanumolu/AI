@@ -40,6 +40,9 @@ is **Collection Required** (thresholds in `config.py`). If a compartment has no 
 is saved as *unassigned* and the user is warned.
 
 ## Quick start (local)
+**Windows shortcut:** after the one-time setup below, double-click `start_app.bat`. It starts MySQL if needed, runs the
+server and opens http://localhost:8000. Keep its window open while you use the app.
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\activate
