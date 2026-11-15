@@ -16,6 +16,7 @@ dashboard** that refreshes every 5 seconds.
 | Stack | Python 3, Flask, SQLAlchemy, MySQL, TensorFlow/Keras, OpenCV, Chart.js, Waitress, Docker |
 
 ## Documentation
+- `docs/REQUIREMENTS_TRACEABILITY.md`: every item of the project brief mapped to its implementation and test evidence
 - `docs/ARCHITECTURE.md`: components, request flow, data model, security, deployment
 - `docs/MODEL_REPORT.md`: dataset, training method, results, confusion matrix, limitations
 - `docs/TESTING.md`: generated test report (`python scripts/make_test_report.py`)
@@ -79,6 +80,7 @@ If the model file is missing, classification returns a clear "model not trained"
 
 ## Testing
 ```powershell
+python tests/requirements_audit.py          # 51 requirement checks over HTTP incl. a concurrency test; needs a THROWAWAY MySQL DB (see file header)
 python -m pytest -q                        # 25 tests (SQLite in memory, classifier stubbed except one smoke test)
 python tests/e2e/run_e2e.py --url http://localhost:8010   # 28 browser checks; use a THROWAWAY database (see file header)
 python scripts/make_test_report.py         # regenerates docs/TESTING.md

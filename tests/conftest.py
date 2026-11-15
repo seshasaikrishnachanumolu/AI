@@ -1,5 +1,4 @@
 import io
-import shutil
 
 import cv2
 import numpy as np
@@ -14,8 +13,12 @@ from config import TestConfig
 
 
 @pytest.fixture()
-def app():
-    app = create_app(TestConfig)
+def app(tmp_path):
+    # Each test gets its own upload folder, so parallel or overlapping test runs cannot interfere.
+    class IsolatedConfig(TestConfig):
+        UPLOAD_FOLDER = str(tmp_path / "uploads")
+
+    app = create_app(IsolatedConfig)
     with app.app_context():
         db.create_all()
         admin = User(name="Admin", email="admin@test.com", role="admin")
@@ -30,7 +33,6 @@ def app():
         yield app
         db.session.remove()
         db.drop_all()
-    shutil.rmtree(app.config["UPLOAD_FOLDER"], ignore_errors=True)
 
 
 @pytest.fixture()

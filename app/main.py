@@ -65,7 +65,7 @@ def process_upload(file, location_id):
         )
 
     volume = cfg["ESTIMATED_VOLUME_LITRES"].get(category, 0.5)
-    compartment = bin_service.find_compartment(location.id, category, volume)
+    compartment = bin_service.assign_waste(location.id, category, volume)
     record = WasteRecord(
         user_id=current_user.id,
         image_filename=filename,
@@ -78,7 +78,6 @@ def process_upload(file, location_id):
     if compartment is not None:
         record.bin_id = compartment.bin_id
         record.compartment_id = compartment.id
-        bin_service.add_waste(compartment, volume)
     db.session.add(record)
     db.session.commit()
     return record

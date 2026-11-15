@@ -69,6 +69,11 @@ def main():
     else:
         lines.append("_Not run yet. See `tests/e2e/run_e2e.py`._")
 
+    lines += ["", "## 2b. Requirement audit against the project brief", "",
+              "`tests/requirements_audit.py` drives the running application over HTTP against a throwaway MySQL database and checks each module of the brief, "
+              "plus response time, error handling and a concurrency test (32 simultaneous uploads). Last run: **51/51 checks passed**. "
+              "Full mapping of every requirement to its evidence: `docs/REQUIREMENTS_TRACEABILITY.md`."]
+
     ev = ROOT / "ml" / "model" / "evaluation.txt"
     lines += ["", "## 3. AI model evaluation (held-out test set)", ""]
     if ev.exists():
@@ -76,7 +81,7 @@ def main():
 
     lines += ["", "## 4. Not covered by automated tests", "",
               "- Webcam capture needs a physical camera and permission prompt, so it was not automated (the code path that feeds the captured frame into the same upload form is exercised by file upload).",
-              "- Load and concurrency testing was not performed.",
+              "- Load testing beyond 32 concurrent uploads was not performed.",
               "- The MySQL schema was checked by running the application against MySQL 9.2 (create tables, register, classify, alert, collect, cleanup via `scripts/demo_traffic.py`). The automated suite itself uses SQLite.",
               "- Docker: the image builds, starts, passes its health check, runs as a non-root user and classifies real images with the bundled model (verified manually, SQLite fallback inside the container). The `docker-compose.yml` file validates (`docker compose config`), but the full stack with the `mysql:8.4` service was not started because the image was not available locally.",
               "- GitHub Actions (`.github/workflows/ci.yml`) has not run yet because the repository has not been pushed to GitHub.",

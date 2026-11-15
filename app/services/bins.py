@@ -3,6 +3,7 @@ estimated waste volume; it is not measured by sensors."""
 from datetime import datetime
 
 from flask import current_app
+from sqlalchemy import func, update
 
 from ..extensions import db
 from ..models import Alert, BinCompartment, CollectionRecord, SmartBin
@@ -19,34 +20,45 @@ def create_bin(name, location_id, capacity=None, categories=None):
     return b
 
 
-def find_compartment(location_id, category, volume):
-    """Pick the compartment for `category` with the lowest fill among bins at the
-    location that still have room for `volume`. Returns None if all are full."""
+def assign_waste(location_id, category, volume):
+    """Reserve room for `volume` litres in the emptiest matching compartment at a location.
+
+    The increment is a single conditional UPDATE executed by the database
+    (`current_load = current_load + v WHERE current_load + v <= max_capacity`), so concurrent
+    uploads can neither lose updates nor overfill a compartment. Returns the compartment, or
+    None when every matching compartment at the location is full. At >= 90% an alert and a
+    pending collection are raised.
+    """
+    cfg = current_app.config
     candidates = (
         BinCompartment.query.join(SmartBin)
         .filter(SmartBin.location_id == location_id, BinCompartment.category == category)
         .all()
     )
-    with_room = [c for c in candidates if c.current_load + volume <= c.max_capacity]
-    if not with_room:
-        return None
-    return min(with_room, key=lambda c: c.fill_percent)
-
-
-def add_waste(compartment, volume):
-    """Increase simulated load; raise an alert and a pending collection at >= 90%."""
-    cfg = current_app.config
-    compartment.current_load = round(compartment.current_load + volume, 3)
-    db.session.flush()
-    if compartment.fill_percent >= cfg["ALERT_PERCENT"]:
-        _raise_alert(compartment)
+    for comp in sorted(candidates, key=lambda c: (c.fill_percent, c.id)):
+        result = db.session.execute(
+            update(BinCompartment)
+            .where(
+                BinCompartment.id == comp.id,
+                BinCompartment.current_load + volume <= BinCompartment.max_capacity,
+            )
+            .values(current_load=func.round(BinCompartment.current_load + volume, 3))
+            .execution_options(synchronize_session=False)
+        )
+        if result.rowcount == 1:
+            db.session.refresh(comp)  # pick up the value the database computed
+            if comp.fill_percent >= cfg["ALERT_PERCENT"]:
+                _raise_alert(comp)
+            return comp
+    return None
 
 
 def _raise_alert(compartment):
     b = compartment.bin
-    exists = Alert.query.filter_by(
-        compartment_id=compartment.id, resolved=False
-    ).first()
+    # Lock the bin row so concurrent requests cannot both create the alert / pending collection.
+    # Locking reads also see rows committed by other requests after this transaction started.
+    db.session.query(SmartBin).filter_by(id=b.id).with_for_update().one()
+    exists = Alert.query.filter_by(compartment_id=compartment.id, resolved=False).with_for_update().first()
     if not exists:
         db.session.add(
             Alert(
@@ -58,9 +70,8 @@ def _raise_alert(compartment):
                 ),
             )
         )
-    if not CollectionRecord.query.filter_by(bin_id=b.id, status="pending").first():
+    if not CollectionRecord.query.filter_by(bin_id=b.id, status="pending").with_for_update().first():
         db.session.add(CollectionRecord(bin_id=b.id, status="pending"))
-
 
 def reset_bin(bin_, admin_user):
     """Mark a bin as collected: store the collection, zero all compartments, resolve alerts."""
