@@ -16,6 +16,7 @@ dashboard** that refreshes every 5 seconds.
 | Stack | Python 3, Flask, SQLAlchemy, MySQL, TensorFlow/Keras, OpenCV, Chart.js, Waitress, Docker |
 
 ## Documentation
+- **`docs/SmartWaste_AI_Setup_and_User_Guide.pdf`: start here.** Installation, first-time user guide, administrator guide, roles and permissions, troubleshooting (source: `docs/guide/guide.html`, rebuild with `python scripts/make_guide_pdf.py`)
 - `docs/REQUIREMENTS_TRACEABILITY.md`: every item of the project brief mapped to its implementation and test evidence
 - `docs/ARCHITECTURE.md`: components, request flow, data model, security, deployment
 - `docs/MODEL_REPORT.md`: dataset, training method, results, confusion matrix, limitations
@@ -86,6 +87,9 @@ python tests/e2e/run_e2e.py --url http://localhost:8010   # 28 browser checks; u
 python scripts/make_test_report.py         # regenerates docs/TESTING.md
 ```
 GitHub Actions (`.github/workflows/ci.yml`) runs the unit tests and builds the Docker image on every push.
+
+## Accounts and passwords
+Anyone can register on the website (always a normal **User**). **Admins cannot be created on the website.** Use `python scripts/manage_admin.py` to change the admin password, add another administrator, or reset a user's forgotten password (see the guide, Part 4.11).
 
 ## Demo helper
 `python scripts/demo_traffic.py --count 30 --delay 3` sends real dataset images through the running app so the live

@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SmartWaste AI - Setup and User Guide</title>
+<style>
+  :root { --green:#16a34a; --dark:#0b1f17; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 10.3pt; line-height: 1.5; color: #1e293b; margin: 0; }
+  h1, h2, h3 { color: var(--ink); line-height: 1.2; margin: 0 0 .4em; }
+  h1.part { font-size: 22pt; border-bottom: 4px solid var(--green); padding-bottom: 6px; margin-bottom: 14px; break-before: page; }
+  h2 { font-size: 14.5pt; margin-top: 20px; break-after: avoid; color: #14532d; }
+  h3 { font-size: 11.5pt; margin-top: 14px; break-after: avoid; }
+  p { margin: 0 0 .7em; }
+  a { color: #15803d; }
+  code { font-family: Consolas, "Courier New", monospace; background: #f1f5f9; padding: 1px 4px; border-radius: 3px; font-size: 9.4pt; }
+  pre { font-family: Consolas, "Courier New", monospace; background: #0f172a; color: #e2e8f0; padding: 9px 12px; border-radius: 6px; font-size: 9pt; line-height: 1.45; margin: .4em 0 .9em; white-space: pre-wrap; break-inside: avoid; }
+  pre .c { color: #86efac; }
+  ul, ol { margin: .2em 0 .8em; padding-left: 1.3em; } li { margin-bottom: .25em; }
+  table { width: 100%; border-collapse: collapse; margin: .4em 0 1em; font-size: 9.6pt; break-inside: auto; }
+  th { background: #0b1f17; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+  td { border-bottom: 1px solid var(--line); padding: 6px 8px; vertical-align: top; }
+  tr { break-inside: avoid; } tr:nth-child(even) td { background: #f8fafc; }
+  td.c, th.c { text-align: center; }
+  .yes { color: #15803d; font-weight: 700; } .no { color: #b91c1c; font-weight: 700; } .na { color: #94a3b8; }
+  .box { border-left: 5px solid; border-radius: 4px; padding: 8px 12px; margin: .6em 0 1em; break-inside: avoid; }
+  .box b.t { display: block; margin-bottom: 2px; }
+  .tip { background: #f0fdf4; border-color: #16a34a; } .note { background: #eff6ff; border-color: #2563eb; }
+  .warn { background: #fffbeb; border-color: #f59e0b; } .danger { background: #fef2f2; border-color: #dc2626; }
+  figure { margin: .6em 0 1.1em; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; max-height: 88mm; object-fit: contain; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 2px 8px rgba(15,23,42,.12); }
+  figure.small img { max-height: 72mm; } figure.phone img { max-height: 100mm; }
+  figcaption { font-size: 8.8pt; color: var(--muted); margin-top: 4px; }
+  .steps { counter-reset: s; list-style: none; padding: 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 38px; margin-bottom: 12px; }
+  .steps > li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--green); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .steps > li > b:first-child { color: var(--ink); font-size: 11pt; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 8.8pt; font-weight: 700; color: #fff; }
+  .b-user { background: #2563eb; } .b-admin { background: #7c3aed; } .b-vis { background: #64748b; }
+  /* cover */
+  .cover { height: 262mm; background: linear-gradient(160deg, #052e16, #0b1f17 60%, #0f3d27); color: #e2e8f0; padding: 60mm 18mm 0; margin: -16mm -14mm 0; width: calc(100% + 28mm); page-break-after: always; position: relative; }
+  .cover .logo { width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg,#22c55e,#15803d); display: flex; align-items: center; justify-content: center; font-size: 30pt; color: #fff; margin-bottom: 22px; }
+  .cover h1 { color: #fff; font-size: 33pt; margin: 0 0 8px; letter-spacing: -.5px; }
+  .cover h2 { color: #4ade80; font-size: 17pt; font-weight: 600; margin: 0 0 30px; }
+  .cover p { color: #cbd5e1; font-size: 11.5pt; max-width: 135mm; }
+  .cover .for { position: absolute; left: 18mm; bottom: 24mm; right: 18mm; border-top: 1px solid rgba(255,255,255,.25); padding-top: 12px; font-size: 10pt; color: #94a3b8; }
+  .small { font-size: 9pt; color: var(--muted); }
+  .toc td { border: 0; padding: 3px 8px; background: transparent !important; } .toc td:first-child { width: 55px; color: var(--green); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="logo">&#9851;</div>
+  <h1>SmartWaste AI</h1>
+  <h2>Setup and User Guide</h2>
+  <p>AI-Powered Smart Waste Management and Monitoring System. How to install it, run it, and use it as a
+     visitor, a user or an administrator, written for people who have never seen it before.</p>
+  <div class="for">
+    <b style="color:#fff">Contents:</b> what you need &middot; installation &middot; first-time user guide &middot; administrator guide &middot; roles and permissions &middot; troubleshooting<br>
+    November 2026
+  </div>
+</section>
+
+<!-- ============================ CONTENTS ============================ -->
+<h1 style="font-size:20pt;margin-top:0">Contents</h1>
+<table class="toc">
+  <tr><td>Part 1</td><td><b>What this system is</b>: the idea in plain words, and the roles (who can do what)</td></tr>
+  <tr><td>Part 2</td><td><b>Installation</b>: what software you need, step-by-step setup, starting the app, Docker option</td></tr>
+  <tr><td>Part 3</td><td><b>User guide</b>: for a first-time user (register, classify waste, history)</td></tr>
+  <tr><td>Part 4</td><td><b>Administrator guide</b>: admin login, live dashboard, bins, alerts, collections, analytics</td></tr>
+  <tr><td>Part 5</td><td><b>Roles and permissions</b>: complete table, and what the system does not have</td></tr>
+  <tr><td>Part 6</td><td><b>Troubleshooting</b>, security checklist and command cheat sheet</td></tr>
+</table>
+
+<div class="box note"><b class="t">The 60-second version</b>
+Install Python and MySQL &rarr; download the project &rarr; run <code>pip install -r requirements.txt</code> &rarr; fill in <code>.env</code> &rarr;
+run <code>python setup_mysql.py</code> and <code>python seed.py</code> &rarr; run <code>python serve.py</code> &rarr; open <code>http://localhost:8000</code>.
+Users register on the website. The administrator logs in at <code>/admin/login</code>.</div>
+
+<!-- ============================ PART 1 ============================ -->
+<h1 class="part">Part 1. What this system is</h1>
+
+<h2>The idea</h2>
+<p>People take a photo of a piece of waste. A trained <b>artificial-intelligence model (a CNN)</b> recognises what the waste is made of:
+<b>plastic, paper, metal, glass or organic</b>. The app shows how sure it is (the <i>confidence</i>), tells you how to dispose of the item, and puts it into the
+matching section of a <b>virtual smart bin</b>. Administrators watch all bins on a live screen, get an alert when a bin section is almost full, and record
+when the bin has been emptied.</p>
+
+<div class="box warn"><b class="t">Important: the bins are virtual and fullness is simulated</b>
+There are no real bins or sensors. Every classified item adds an <i>estimated</i> volume (for example 0.5 litre for plastic) to a compartment that has a
+<i>configured</i> maximum capacity. Fullness is therefore a simulation based on the app's records, not a measurement. Every figure on the admin dashboard is calculated from
+records stored in the database; the system never invents data.</div>
+
+<h2>Words used in this guide</h2>
+<table>
+  <tr><th style="width:26%">Word</th><th>Meaning</th></tr>
+  <tr><td><b>Virtual smart bin</b></td><td>A bin that exists in the software. It belongs to one location (for example Hostel or Library).</td></tr>
+  <tr><td><b>Compartment</b></td><td>Every bin has five compartments, one for each waste category. Each has its own maximum capacity in litres.</td></tr>
+  <tr><td><b>Confidence</b></td><td>How sure the AI is about its answer, as a percentage. Low confidence means you should retake the photo.</td></tr>
+  <tr><td><b>Fill %</b></td><td>Current load divided by the compartment's maximum capacity. A bin's status uses its fullest compartment.</td></tr>
+  <tr><td><b>Collection</b></td><td>The act of emptying a bin. The admin records it, and the bin's compartments go back to 0 %.</td></tr>
+  <tr><td><b>Recyclable</b></td><td>Plastic, paper, metal and glass count as recyclable. Organic waste counts as non-recyclable (it is compostable).</td></tr>
+</table>
+
+<h2>The roles: who can do what</h2>
+<p>The system has <b>two kinds of accounts</b>, plus visitors who have not logged in. There are no other roles.</p>
+<table>
+  <tr><th style="width:17%">Role</th><th style="width:30%">How you get it</th><th>What you can do</th></tr>
+  <tr><td><span class="badge b-vis">Visitor</span></td><td>Nothing: just open the website.</td><td>See the landing page, register, log in. Nothing else.</td></tr>
+  <tr><td><span class="badge b-user">User</span></td><td>Anyone can register on the website. New accounts are always <b>User</b>.</td><td>Classify waste with a photo, see the result and disposal advice, see their own history.</td></tr>
+  <tr><td><span class="badge b-admin">Admin</span></td><td>Cannot be created on the website. The first admin is created during installation; more admins are added by the person who runs the server (Part 4.11).</td><td>Live dashboard, bins and capacities, alerts, collections, analytics and reports, all users' classification log, locations.</td></tr>
+</table>
+<p>The two login pages are separate: a User account cannot sign in on the admin page, and an Admin account cannot sign in on the user page. The full permission table is in Part 5.</p>
+
+<!-- ============================ PART 2 ============================ -->
+<h1 class="part">Part 2. Installation</h1>
+
+<h2>2.1 What you need on the computer</h2>
+<p>These steps were written and tested on <b>Windows</b> (commands are for PowerShell). The server computer needs the software below; the people who only <i>use</i> the app need just a web browser.</p>
+<table>
+  <tr><th style="width:23%">Software</th><th style="width:16%">Version</th><th style="width:13%">Needed?</th><th>What it is for / where to get it</th></tr>
+  <tr><td><b>Python 3</b> (64-bit)</td><td>3.12 or 3.13</td><td class="yes">Required</td><td>Runs the application and the AI model. <a href="https://www.python.org/downloads/">python.org/downloads</a>. During installation tick <b>"Add python.exe to PATH"</b>.</td></tr>
+  <tr><td><b>MySQL Server</b></td><td>8.x or 9.x</td><td class="yes">Required</td><td>The database that stores users, bins and records. <a href="https://dev.mysql.com/downloads/installer/">dev.mysql.com/downloads/installer</a>. Remember the <b>root password</b> you choose.</td></tr>
+  <tr><td><b>MySQL Workbench</b></td><td>8.x</td><td>Optional</td><td>A window to look inside the database. Comes with the MySQL installer.</td></tr>
+  <tr><td><b>Web browser</b></td><td>Edge, Chrome, Firefox</td><td class="yes">Required</td><td>To open the app. Recent version.</td></tr>
+  <tr><td><b>Git</b></td><td>any</td><td>Optional</td><td>Only if you download the project from GitHub with <code>git clone</code>. You can also download a ZIP.</td></tr>
+  <tr><td><b>VS Code</b></td><td>any</td><td>Optional</td><td>A code editor, handy for editing the <code>.env</code> file.</td></tr>
+  <tr><td><b>Docker Desktop</b></td><td>any</td><td>Optional</td><td>Only for the alternative "run in containers" route (section 2.7).</td></tr>
+  <tr><td><b>A webcam</b></td><td>-</td><td>Optional</td><td>Users can also upload photos from files, so a camera is not required.</td></tr>
+</table>
+<p><b>Computer:</b> about 8 GB of RAM recommended (4 GB minimum), and about <b>3 GB of free disk space</b> (the Python packages, including TensorFlow, take about 2.3 GB). An internet connection is needed once, during installation.
+You do <b>not</b> need the image dataset or any AI training: the trained model (<code>ml/model/waste_cnn.keras</code>, 10 MB) is already inside the project.</p>
+
+<h2>2.2 Step-by-step installation</h2>
+<ol class="steps">
+  <li><b>Install Python.</b> Download it, run the installer, tick <b>Add python.exe to PATH</b>, click Install. Check it worked: open PowerShell and type
+    <pre>python --version</pre>You should see <code>Python 3.12.x</code> or <code>3.13.x</code>.</li>
+
+  <li><b>Install MySQL.</b> Run the MySQL installer, choose <i>Server only</i> (or <i>Full</i> to include Workbench), keep port <b>3306</b>, set a <b>root password</b> and write it down.
+    Let it start MySQL as a Windows service (the default). The service starts automatically whenever Windows starts.</li>
+
+  <li><b>Get the project.</b> Put the project folder somewhere simple, for example <code>C:\SmartWaste</code>.
+    <pre>git clone &lt;your-repository-url&gt; C:\SmartWaste</pre>(or unzip the downloaded ZIP into that folder).</li>
+
+  <li><b>Open PowerShell inside the project folder.</b> In File Explorer open the folder, click the address bar, type <code>powershell</code> and press Enter. Or:
+    <pre>cd C:\SmartWaste</pre></li>
+
+  <li><b>Create a private Python environment</b> (called a virtual environment; it keeps this project's packages separate).
+    <pre>python -m venv .venv
+.\.venv\Scripts\Activate.ps1</pre>
+    The prompt now starts with <code>(.venv)</code>. If Windows says <i>"running scripts is disabled"</i>, run
+    <code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code> and try again. (Or skip activating and type <code>.\.venv\Scripts\python</code> instead of <code>python</code> in the commands below.)</li>
+
+  <li><b>Install the packages.</b>
+    <pre>pip install -r requirements.txt</pre>This downloads about 500 MB and takes <b>5 to 15 minutes</b> depending on your internet speed. Wait until the prompt returns. Warnings in yellow are normal; red <i>ERROR</i> lines are not (see Part 6).</li>
+
+  <li><b>Create your settings file.</b> Copy the example and open it in Notepad:
+    <pre>copy .env.example .env
+notepad .env</pre>Edit these lines and save (details in the table below):
+    <pre>SECRET_KEY=<span class="c">paste-a-long-random-text-here</span>
+MYSQL_USER=root
+MYSQL_PASSWORD=<span class="c">your MySQL root password</span>
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_DATABASE=smart_waste
+ADMIN_EMAIL=<span class="c">admin@yourcollege.edu</span>
+ADMIN_PASSWORD=<span class="c">a strong password you will remember</span></pre></li>
+
+  <li><b>Create the database and tables.</b> Run these two commands, one after the other:
+    <pre>python setup_mysql.py
+python seed.py</pre>The first creates an empty database called <code>smart_waste</code>. The second creates the 7 tables, the <b>administrator account</b>, 5 locations
+    (College Block A, College Block B, Hostel, Canteen, Library) and 6 virtual bins. It prints a line for each thing it created and ends with <code>Database ready.</code>
+    It is safe to run again: it never duplicates anything and creates <b>no waste records</b>.</li>
+
+  <li><b>Start the application.</b>
+    <pre>python serve.py</pre>Leave this window open: it is the running server. (Shortcut: double-click <code>start_app.bat</code> in the project folder; it also opens the browser.)</li>
+
+  <li><b>Open the app.</b> In your browser go to <b>http://localhost:8000</b>. You should see the SmartWaste AI landing page.
+    To confirm everything is connected, open <b>http://localhost:8000/health</b>; it should show <code>{"database":"up","status":"ok"}</code>.</li>
+</ol>
+
+<div class="box tip"><b class="t">To stop the app</b> click the PowerShell window and press <b>Ctrl + C</b>, or just close the window.
+<b>To run it again later</b> you only need step 9 (<code>python serve.py</code> or <code>start_app.bat</code>); MySQL starts by itself with Windows.</div>
+
+<h2>2.3 What each line of the settings file means</h2>
+<table>
+  <tr><th style="width:24%">Setting</th><th>Meaning</th></tr>
+  <tr><td><code>SECRET_KEY</code></td><td>A long random text used to protect login sessions. Make one with: <code>python -c "import secrets; print(secrets.token_hex(24))"</code> and paste the result. Never share it.</td></tr>
+  <tr><td><code>MYSQL_USER</code> / <code>MYSQL_PASSWORD</code></td><td>The same MySQL login you use in Workbench (usually user <code>root</code>). Special characters in the password are fine.</td></tr>
+  <tr><td><code>MYSQL_HOST</code> / <code>MYSQL_PORT</code></td><td>Where MySQL runs. <code>localhost</code> and <code>3306</code> unless you changed them.</td></tr>
+  <tr><td><code>MYSQL_DATABASE</code></td><td>Name of the database to create. Leave as <code>smart_waste</code>.</td></tr>
+  <tr><td><code>ADMIN_EMAIL</code> / <code>ADMIN_PASSWORD</code></td><td>The login of the first administrator. <b>Set these before running <code>python seed.py</code> the first time.</b> They are only used when the admin account does not exist yet; editing them afterwards does <b>not</b> change an existing admin (to change a password later, see Part 4.11).</td></tr>
+</table>
+<div class="box note"><b class="t">No MySQL yet? You can still try the app</b> If you delete (or comment out with <code>#</code>) the <code>MYSQL_...</code> lines in <code>.env</code>, the app automatically uses a small built-in SQLite file (<code>instance/waste.db</code>). This is only for a quick look; the real system uses MySQL.</div>
+
+<h2>2.4 Look inside the database (optional)</h2>
+<p>Open <b>MySQL Workbench</b>, connect to <code>localhost:3306</code> with your root password, and open the schema <code>smart_waste</code>. You will see the seven tables:
+<code>users</code>, <code>locations</code>, <code>smart_bins</code>, <code>bin_compartments</code>, <code>waste_records</code>, <code>collection_records</code>, <code>alerts</code>.
+Right-click a table and choose <i>Select Rows</i> to read it. Please do not edit rows by hand; use the app instead.</p>
+
+<h2>2.5 Use the app from another device on the same Wi-Fi (optional)</h2>
+<p>The server listens on all network cards. Find the server computer's address with <code>ipconfig</code> (the <i>IPv4 Address</i>, for example <code>192.168.1.20</code>) and open
+<code>http://192.168.1.20:8000</code> on the phone or laptop. Windows may ask to allow Python through the firewall: allow it on <i>Private networks</i> only.
+On a phone, the <b>Choose photo</b> picker normally offers <i>Take photo</i>. The in-page <i>Use webcam</i> button only works on the server computer itself (<code>localhost</code>), because browsers allow camera access only on <code>localhost</code> or HTTPS.
+Use this only on a network you trust.</p>
+
+<h2>2.6 Development mode (optional)</h2>
+<p><code>python run.py</code> starts a development server with automatic reloading on <b>http://127.0.0.1:5000</b>. Use <code>serve.py</code> (port 8000) for demonstrations and normal use.</p>
+
+<h2>2.7 Alternative: run everything with Docker (optional, advanced)</h2>
+<p>Instead of installing Python and MySQL yourself, Docker Desktop can run both in containers. Create a <code>.env</code> file containing at least <code>SECRET_KEY=...</code>, start Docker Desktop, then:</p>
+<pre>docker compose up --build</pre>
+<p>Open <b>http://localhost:8000</b>. The first start builds the image (10 to 30 minutes, depending on your internet speed) and creates the database, admin account, locations and bins by itself. The admin login is
+<code>ADMIN_EMAIL</code> / <code>ADMIN_PASSWORD</code> if set in <code>.env</code>, otherwise <code>admin@smartwaste.local</code> / <code>Admin@12345</code>. Stop with <code>docker compose down</code>.</p>
+<div class="box warn"><b class="t">Honest note</b> The application container was built and tested on its own during development. The combined stack with the MySQL container (<code>docker compose</code>) was checked for correct syntax but was not started end-to-end. If it misbehaves, use the normal installation above.</div>
+
+<h2>2.8 Retraining the AI model (optional, not needed to run)</h2>
+<p>The included model is ready to use (87.2 % accuracy on 984 images it had never seen). Only people who want to retrain it need the image dataset; see <code>docs/MODEL_REPORT.md</code> in the project.</p>
+
+<!-- ============================ PART 3 ============================ -->
+<h1 class="part">Part 3. User guide</h1>
+<p><span class="badge b-user">For users</span> You do not need any technical knowledge. You need a web browser and the address of the app (for example <code>http://localhost:8000</code> or the address your administrator gives you).</p>
+
+<h2>3.1 The first page you see</h2>
+<p>The landing page explains the system. The counters show real totals (items classified, bins, locations). At the top right use <b>Get started</b> to create an account or <b>Log in</b> if you already have one.</p>
+<figure><img src="01_landing.png"><figcaption>Landing page. "Get started" opens registration; "Log in" opens the login page.</figcaption></figure>
+
+<h2>3.2 Create your account (once)</h2>
+<ol class="steps">
+  <li><b>Click "Get started"</b> (or go to <code>/register</code>).</li>
+  <li><b>Fill the form:</b> your full name, your email address, a password of <b>at least 8 characters</b>, and the same password again.
+    The email is your username, and each email can be used only once.</li>
+  <li><b>Click "Create account".</b> You see the message <i>"Registration successful. Please log in."</i></li>
+</ol>
+<figure class="small"><img src="02_register.png"><figcaption>Registration form.</figcaption></figure>
+<div class="box warn"><b class="t">Remember your password</b> There is no "Forgot password" button. If you forget it, ask the administrator to reset it (Part 4.11). New accounts are always ordinary Users.</div>
+
+<h2>3.3 Log in</h2>
+<p>Enter your email and password on the login page. After logging in you land on your <b>Overview</b> page. Use the menu on the left (on a phone, the &#9776; button) to move around. When you are finished, click <b>Log out</b> at the bottom of the menu.</p>
+<figure class="small"><img src="03_login.png"><figcaption>User login. Administrators have their own page (Part 4).</figcaption></figure>
+
+<h2>3.4 Your Overview page</h2>
+<p>The first time, it is empty and invites you to classify your first item. Later it shows how many items you classified, how many were recyclable, your recyclable share, your latest items and a bar for each category.</p>
+<figure class="small"><img src="05_user_overview_empty.png"><figcaption>Overview before your first classification.</figcaption></figure>
+
+<h2>3.5 Classify a piece of waste</h2>
+<ol class="steps">
+  <li><b>Click "Classify waste"</b> in the menu.<figure class="small"><img src="06_classify_empty.png"><figcaption>The Classify page: choose a location and add a photo on the left; the result appears on the right.</figcaption></figure></li>
+  <li><b>Choose the disposal location</b>: where you are throwing the waste (for example Canteen). The item is put into a bin at that place. The app remembers your last choice.</li>
+  <li><b>Add a photo.</b> Three ways: <b>drag</b> an image onto the dashed box; <b>click</b> the box and pick a file; or click <b>Use webcam</b>, allow the camera when your browser asks, then click <b>Capture photo</b>.
+    Accepted: PNG, JPG, JPEG, WEBP, BMP, up to <b>8 MB</b>. A preview appears.<figure class="small"><img src="07_classify_preview.png"><figcaption>After choosing a location and a photo, a preview is shown.</figcaption></figure></li>
+  <li><b>Click "Classify".</b> The button says "Analyzing…" for a moment. (The first time after the server starts it may take a few seconds while the AI model loads.)</li>
+  <li><b>Read the result.</b><figure><img src="08_classify_result.png"><figcaption>The result panel.</figcaption></figure>
+    <table>
+      <tr><td style="width:27%"><b>Predicted category</b></td><td>What the AI thinks the item is: plastic, paper, metal, glass or organic.</td></tr>
+      <tr><td><b>Confidence ring</b></td><td>How sure the AI is, as a percentage. Higher is better; a low number is a hint to retake the photo.</td></tr>
+      <tr><td><b>Recyclable badge</b></td><td>Recyclable (plastic, paper, metal, glass) or non-recyclable / compostable (organic).</td></tr>
+      <tr><td><b>Disposal recommendation</b></td><td>A short instruction, for example "Empty and rinse the container and place it in the glass compartment."</td></tr>
+      <tr><td><b>Assigned to</b></td><td>Which virtual bin and compartment received the item, for example "Canteen Bin 1, plastic compartment".</td></tr>
+    </table></li>
+  <li><b>Next:</b> <b>View details</b> opens a full-page result; <b>Classify another</b> clears the form.</li>
+</ol>
+
+<div class="box tip"><b class="t">Get better results</b>
+<ul style="margin:.2em 0 0">
+  <li>Photograph <b>one item at a time</b> and fill most of the picture with it.</li>
+  <li>Use good light and a plain background (a table or a sheet of paper).</li>
+  <li>Hold the camera steady and avoid strong reflections on shiny items, which can make metal, glass and plastic look alike.</li>
+</ul></div>
+<div class="box note"><b class="t">The AI is not perfect</b> It is right about 87 times out of 100 on the test photos, and metal and plastic are the hardest. If the answer looks wrong, retake the photo. There is no button to correct a result.</div>
+
+<h3>Messages you may see</h3>
+<table>
+  <tr><th style="width:42%">Message</th><th>What to do</th></tr>
+  <tr><td>"Select the disposal location."</td><td>Pick a location in the drop-down.</td></tr>
+  <tr><td>"Choose an image or capture one with the webcam."</td><td>Add a photo first.</td></tr>
+  <tr><td>"Unsupported file type…" or "Image too large (max 8 MB)."</td><td>Use a PNG/JPG/WEBP/BMP smaller than 8 MB.</td></tr>
+  <tr><td>"No space left in the … compartment at this location. Collection is required."</td><td>The item was recorded, but every matching compartment there is full, so it was not put in a bin. Tell the administrator or try another location.</td></tr>
+  <tr><td>"The AI model has not been trained yet…"</td><td>A setup problem: tell the administrator (the model file is missing).</td></tr>
+</table>
+
+<h2>3.6 My history</h2>
+<p>Click <b>My history</b> to see every item you have classified, newest first, as cards with the photo, category, confidence, date and time, location and the disposal advice. Click a card for the full result.
+There are 12 cards per page; use <b>Newer / Older</b> at the bottom. <b>Only you and the administrators can see your photos.</b></p>
+<figure><img src="09_history.png"><figcaption>My history.</figcaption></figure>
+<figure class="small"><img src="10_user_overview.png"><figcaption>Your Overview page after some classifications.</figcaption></figure>
+<div class="box note"><b class="t">About times</b> All dates and times in the app are shown in <b>UTC</b>. For India add 5 hours 30 minutes.</div>
+
+<h2>3.7 On a phone</h2>
+<p>The app adapts to small screens. Open the menu with the &#9776; button. When you tap the image box, most phones offer <i>Take photo</i> or <i>Choose from gallery</i>.</p>
+<figure class="phone"><img src="11_mobile_classify.png"><figcaption>The Classify page on a phone-sized screen.</figcaption></figure>
+
+<!-- ============================ PART 4 ============================ -->
+<h1 class="part">Part 4. Administrator guide</h1>
+<p><span class="badge b-admin">For administrators</span> Administrators monitor bins and manage collections. There is nothing to install: you use the same website with a different login.</p>
+
+<h2>4.1 How to log in as administrator</h2>
+<ol class="steps">
+  <li><b>Open the admin login page:</b> <code>http://localhost:8000/admin/login</code>. You can also click <b>Admin login</b> in the footer of the landing page or on the user login page.</li>
+  <li><b>Enter the administrator email and password.</b> These are the <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> that were in the <code>.env</code> file when <code>python seed.py</code> was first run.
+    If nobody changed them, the defaults are <b><code>admin@smartwaste.local</code></b> and <b><code>Admin@12345</code></b>.</li>
+  <li><b>Click "Sign in to console".</b> You arrive at the <b>Live dashboard</b>.</li>
+</ol>
+<figure class="small"><img src="04_admin_login.png"><figcaption>Admin login.</figcaption></figure>
+<div class="box danger"><b class="t">Change the default password first</b> Anyone who reads this guide knows the default. Change it right away (section 4.11).
+If login fails with "Invalid email or password", the most common reason is that <code>.env</code> was edited <i>after</i> the first seed (that does not change an existing admin), or a normal User account was used (those cannot sign in here).</div>
+
+<h2>4.2 The administrator menu</h2>
+<table>
+  <tr><th style="width:24%">Menu item</th><th>What it is for</th></tr>
+  <tr><td><b>Live dashboard</b></td><td>The control room: totals, bins, activity, alerts. Updates itself every 5 seconds.</td></tr>
+  <tr><td><b>Smart bins</b></td><td>List of all bins; add a bin; open a bin to set capacities.</td></tr>
+  <tr><td><b>Alerts</b></td><td>Capacity alerts raised at 90 %.</td></tr>
+  <tr><td><b>Collections</b></td><td>Pending and completed collections; mark a bin as collected.</td></tr>
+  <tr><td><b>Analytics</b></td><td>Daily, weekly and monthly charts; export to CSV.</td></tr>
+  <tr><td><b>Classification log</b></td><td>Every classified item from every user, with filters and CSV export.</td></tr>
+  <tr><td><b>Locations</b></td><td>Add places where bins are installed.</td></tr>
+</table>
+
+<h2>4.3 The live dashboard</h2>
+<p>The green <b>Live</b> badge (top right) shows the page is updating. If the server stops it turns red and says <i>Reconnecting…</i>; if your login expired it says <i>Session expired</i>: log in again.
+Numbers briefly flash when they change, and a pop-up appears when a new alert is raised.</p>
+<figure><img src="12_admin_dashboard.png"><figcaption>The live dashboard with sample data.</figcaption></figure>
+<table>
+  <tr><th style="width:30%">Card</th><th>Meaning</th></tr>
+  <tr><td>Total waste items detected</td><td>Number of classifications stored.</td></tr>
+  <tr><td>Recyclable / Non-recyclable waste</td><td>Plastic + paper + metal + glass, versus organic (the rule is set in <code>config.py</code>).</td></tr>
+  <tr><td>Plastic, Paper, Metal, Glass, Organic waste</td><td>Items per category.</td></tr>
+  <tr><td>Total virtual bins</td><td>Bins that exist.</td></tr>
+  <tr><td>Normal bins</td><td>Fullest compartment below 70 %.</td></tr>
+  <tr><td>Almost-full bins</td><td>Fullest compartment from 70 % up to (not including) 90 %.</td></tr>
+  <tr><td>Collection-required bins</td><td>Fullest compartment at 90 % or more.</td></tr>
+  <tr><td>Open alerts</td><td>Alerts not yet resolved.</td></tr>
+</table>
+<p>Below the cards are the <b>Waste by category</b> chart, the <b>Live activity</b> feed (newest items with confidence, user and location) and a card for every bin. A bin card has a <span style="color:#16a34a"><b>green</b></span> top edge when Normal,
+<span style="color:#d97706"><b>amber</b></span> when Almost Full and <span style="color:#dc2626"><b>red</b></span> when Collection Required. Click a card to open that bin.</p>
+<figure class="small"><img src="13_dashboard_bins.png"><figcaption>Bin cards: Hostel Bin 1 needs collection, Library Bin 1 is almost full, the others are normal.</figcaption></figure>
+
+<h2>4.4 Smart bins and capacities</h2>
+<p><b>To add a bin:</b> open <b>Smart bins</b>, type a name (for example "Library Bin 2"), choose its location, enter the capacity per compartment in litres (default 20) and click <b>Create bin</b>.
+Each new bin automatically gets five compartments, one per category.</p>
+<figure><img src="14_bins.png"><figcaption>Smart bins: the "Add a bin" form and the list of bins with their status.</figcaption></figure>
+<p><b>To change capacities or manage one bin:</b> click its name.</p>
+<figure><img src="15_bin_detail.png"><figcaption>Bin detail: every compartment's load and capacity (editable), collection history and recent items.</figcaption></figure>
+<ul>
+  <li><b>Max capacity (L)</b>: type a new number (between 0.1 and 10,000) and click <b>Save capacities</b>. Smaller numbers make the bin fill faster; handy for demonstrations.</li>
+  <li><b>Request collection</b>: puts the bin on the pending-collection list.</li>
+  <li><b>Mark collected / reset capacity</b>: records that the bin was emptied (section 4.7).</li>
+</ul>
+
+<h3>How the simulation works</h3>
+<table>
+  <tr><th style="width:36%">Rule</th><th>Value (set in <code>config.py</code>)</th></tr>
+  <tr><td>Estimated volume added per item</td><td>Plastic 0.5 L &middot; Paper 0.3 L &middot; Metal 0.25 L &middot; Glass 0.6 L &middot; Organic 0.8 L</td></tr>
+  <tr><td>Default compartment capacity</td><td>20 L (changeable per bin in the app)</td></tr>
+  <tr><td>Status thresholds</td><td>Normal below 70 % &middot; Almost Full 70 % to under 90 % &middot; Collection Required 90 % or more</td></tr>
+  <tr><td>Which bin gets the item?</td><td>The emptiest compartment of that category among the bins at the chosen location that still has room. If none has room, the item is saved as "Unassigned".</td></tr>
+</table>
+<p class="small">Changing the volumes or thresholds means editing <code>config.py</code> and restarting the server; there is no screen for it.</p>
+
+<h2>4.5 Alerts</h2>
+<p>When any compartment reaches <b>90 %</b> of its capacity the system automatically (1) raises an alert, (2) creates a pending collection for that bin, and (3) shows a pop-up on the dashboard. One alert exists per compartment while it is open.</p>
+<figure class="small"><img src="16_alerts.png"><figcaption>Alerts page. "Resolve" closes an alert by hand; collecting the bin resolves its alerts automatically.</figcaption></figure>
+
+<h2>4.6 Collections</h2>
+<p>The <b>Collections</b> page has three parts: <b>Pending collections</b> (bins to empty, with location and fill), <b>Almost-full bins without a collection request</b> (click <b>Request collection</b> to schedule one early) and <b>Completed collections</b>.</p>
+<figure><img src="17_collections.png"><figcaption>Hostel Bin 1 is waiting for collection; Library Bin 1 is almost full.</figcaption></figure>
+
+<h2>4.7 Recording that a bin was emptied</h2>
+<ol class="steps">
+  <li><b>Empty the (real or pretend) bin</b>, then open <b>Collections</b> (or the bin's page).</li>
+  <li><b>Click "Mark collected".</b> The system stores the <b>date and time</b>, <b>your name</b> and the simulated litres removed, sets <b>all compartments of that bin to 0 %</b>, resolves its open alerts and moves the entry to <b>Completed collections</b>.</li>
+</ol>
+<figure><img src="18_collections_done.png"><figcaption>After "Mark collected": the bin is back to normal and the collection appears in the history.</figcaption></figure>
+
+<h2>4.8 Analytics and reports</h2>
+<p>Choose <b>Daily (7 days)</b>, <b>Weekly (8 weeks)</b> or <b>Monthly (12 months)</b>. The charts show items per period by category, the category split and the location split. Use <b>Export CSV</b> to download a spreadsheet of all classifications.</p>
+<figure><img src="19_analytics.png"><figcaption>Analytics page.</figcaption></figure>
+
+<h2>4.9 Classification log</h2>
+<p>Every classification by every user: when (UTC), who, category, confidence, recyclable or not, and the bin location. Filter by <b>Category</b> and <b>Location</b>, then <b>Export CSV</b> to download exactly what you filtered. 20 rows per page.</p>
+<figure><img src="20_admin_log.png"><figcaption>Classification log.</figcaption></figure>
+
+<h2>4.10 Locations</h2>
+<p>To add a new place (for example "Sports Complex"): open <b>Locations</b>, type the name and an optional description, click <b>Add location</b>. Then go to <b>Smart bins</b> and create a bin there.
+Users will see the new location in the Classify page's list.</p>
+<figure class="small"><img src="21_locations.png"><figcaption>Locations and how many bins each has.</figcaption></figure>
+<div class="box note"><b class="t">Not in this version</b> Bins and locations cannot be renamed or deleted from the website, and there is no screen to list or delete users.</div>
+
+<h2>4.11 Passwords and extra administrators</h2>
+<p>These tasks are done by <b>the person who runs the server</b>, in PowerShell inside the project folder (with the environment active). The password is typed at a hidden prompt.</p>
+<table>
+  <tr><th style="width:38%">I want to…</th><th>Command</th></tr>
+  <tr><td><b>Change the administrator's password</b></td><td><code>python scripts/manage_admin.py admin@smartwaste.local</code></td></tr>
+  <tr><td><b>Add another administrator</b> (a new person)</td><td><code>python scripts/manage_admin.py manager@college.edu --name "Facility Manager"</code></td></tr>
+  <tr><td><b>Turn an existing user into an administrator</b></td><td><code>python scripts/manage_admin.py asha.verma@example.com --make-admin</code></td></tr>
+  <tr><td><b>Reset a user's forgotten password</b> (stays a normal user)</td><td><code>python scripts/manage_admin.py asha.verma@example.com --reset-user</code></td></tr>
+</table>
+<p>Passwords must have at least 8 characters. Every administrator has the same full powers: there are no "junior" or "senior" admins.</p>
+
+<h2>4.12 A simple daily routine</h2>
+<ol>
+  <li>Log in and look at the <b>Live dashboard</b>: any red or amber bins or open alerts?</li>
+  <li>Open <b>Collections</b> and empty the bins that are pending; click <b>Mark collected</b> for each.</li>
+  <li>If a bin is almost full, click <b>Request collection</b> to plan it.</li>
+  <li>Once a week open <b>Analytics</b>, review trends, and <b>Export CSV</b> if a report is needed.</li>
+</ol>
+
+<h2>4.13 Demonstrations: fill the dashboard with sample activity (optional)</h2>
+<p>To show the live dashboard without taking many photos, with the server running open a second PowerShell window and run:</p>
+<pre>python scripts/demo_traffic.py --count 30 --delay 3     <span class="c"># sends real test photos through the AI</span>
+python scripts/demo_traffic.py --cleanup                <span class="c"># removes the demo user and its records afterwards</span></pre>
+<p>The demo photos come from the project's test image set and go through the normal classification process. Use the clean-up command before real use so statistics stay genuine.</p>
+
+<!-- ============================ PART 5 ============================ -->
+<h1 class="part">Part 5. Roles and permissions</h1>
+<h2>5.1 Who can do what</h2>
+<table>
+  <tr><th>Feature</th><th class="c" style="width:12%">Visitor</th><th class="c" style="width:12%">User</th><th class="c" style="width:12%">Admin</th></tr>
+  <tr><td>See the landing page and public counters</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes</td></tr>
+  <tr><td>Register a new account</td><td class="c yes">Yes</td><td class="c na">-</td><td class="c na">-</td></tr>
+  <tr><td>Log in</td><td class="c yes">Yes</td><td class="c yes">Yes</td><td class="c yes">Yes (admin page)</td></tr>
+  <tr><td>Classify waste with a photo or webcam</td><td class="c no">No</td><td class="c yes">Yes</td><td class="c na">Not in menu</td></tr>
+  <tr><td>See own classification history and results</td><td class="c no">No</td><td class="c yes">Yes</td><td class="c na">Not in menu</td></tr>
+  <tr><td>See other people's classification records</td><td class="c no">No</td><td class="c no">No</td><td class="c yes">Yes (Classification log)</td></tr>
+  <tr><td>Live dashboard and alerts</td><td class="c no">No</td><td class="c no">No</td><td class="c yes">Yes</td></tr>
+  <tr><td>Create bins, set compartment capacities, add locations</td><td class="c no">No</td><td class="c no">No</td><td class="c yes">Yes</td></tr>
+  <tr><td>Request and record collections, resolve alerts</td><td class="c no">No</td><td class="c no">No</td><td class="c yes">Yes</td></tr>
+  <tr><td>Analytics, classification log, CSV export</td><td class="c no">No</td><td class="c no">No</td><td class="c yes">Yes</td></tr>
+  <tr><td>Create administrators / reset passwords</td><td class="c no">No</td><td class="c no">No</td><td class="c na">Server owner only (command line)</td></tr>
+</table>
+<p>If a User types an admin address (for example <code>/admin/</code>) the app answers <b>"Access denied"</b>; a Visitor is sent to the login page.</p>
+
+<h2>5.2 What the system does not have</h2>
+<ul>
+  <li><b>No other roles.</b> There is no separate "collector", "driver", "manager" or "super-admin". Collections are recorded by an administrator.</li>
+  <li><b>No "Forgot password" email.</b> Resets are done with the command in Part 4.11.</li>
+  <li><b>No email or SMS notifications.</b> Alerts appear on the dashboard and the Alerts page only.</li>
+  <li><b>No screens to edit or delete</b> users, bins or locations.</li>
+  <li><b>No real sensors.</b> Fullness is simulated from capacity and estimated volume.</li>
+</ul>
+
+<!-- ============================ PART 6 ============================ -->
+<h1 class="part">Part 6. Troubleshooting, security and cheat sheet</h1>
+<h2>6.1 Troubleshooting</h2>
+<table>
+  <tr><th style="width:33%">What you see</th><th style="width:28%">Likely cause</th><th>What to do</th></tr>
+  <tr><td><code>Access denied for user 'root'</code> when running <code>setup_mysql.py</code></td><td>Wrong <code>MYSQL_PASSWORD</code> in <code>.env</code></td><td>Correct it (same password as Workbench), save, run again.</td></tr>
+  <tr><td><code>Can't connect to MySQL server</code></td><td>The MySQL service is not running</td><td>Open <i>Services</i> (Win+R, <code>services.msc</code>), find "MySQL…", click Start. Or, in an Administrator PowerShell: <code>net start MySQL92</code> (the name may be <code>MySQL80</code> or similar).</td></tr>
+  <tr><td><code>Unknown database 'smart_waste'</code></td><td>Database not created yet</td><td>Run <code>python setup_mysql.py</code> then <code>python seed.py</code>.</td></tr>
+  <tr><td><i>"running scripts is disabled"</i> when activating</td><td>PowerShell policy</td><td><code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code>, or use <code>.\.venv\Scripts\python</code> directly.</td></tr>
+  <tr><td><code>pip install</code> fails or stalls</td><td>Internet interruption, or an unsupported Python</td><td>Check the connection and rerun the same command (it resumes). Use 64-bit Python 3.12 or 3.13.</td></tr>
+  <tr><td>Browser cannot open <code>localhost:8000</code></td><td>The server window was closed, or port 8000 is used</td><td>Start it again. For another port: <code>$env:PORT=8001; python serve.py</code>, then open port 8001.</td></tr>
+  <tr><td>Admin says "Invalid email or password"</td><td><code>.env</code> changed after seeding, wrong login page, or typo</td><td>Use the admin page, not the user page. Reset with <code>manage_admin.py</code> (Part 4.11).</td></tr>
+  <tr><td>"The AI model has not been trained yet"</td><td><code>ml/model/waste_cnn.keras</code> or <code>class_names.json</code> is missing</td><td>Restore both files from the project, or retrain (see <code>docs/MODEL_REPORT.md</code>).</td></tr>
+  <tr><td>Webcam button does nothing</td><td>Camera blocked, or the page is not on <code>localhost</code>/HTTPS</td><td>Allow the camera in the browser's address-bar prompt, or upload a photo instead.</td></tr>
+  <tr><td>Dashboard badge says "Reconnecting…"</td><td>Server stopped or network lost</td><td>Restart the server; the page reconnects by itself.</td></tr>
+  <tr><td>First classification is slow</td><td>The AI model loads on first use</td><td>Normal; later ones are fast (a fraction of a second).</td></tr>
+  <tr><td>Times look wrong</td><td>The app shows UTC</td><td>For India, add 5 h 30 min.</td></tr>
+</table>
+<p>The server also writes a log file, <code>logs/app.log</code>, which helps when asking for support.</p>
+
+<h2>6.2 Security checklist before real use</h2>
+<ul>
+  <li>Change the default admin password (Part 4.11) and use a strong, unique <code>SECRET_KEY</code>.</li>
+  <li>Never share or upload the <code>.env</code> file (it contains your MySQL password). It is excluded from Git on purpose.</li>
+  <li>Do not expose the app to the public internet without HTTPS and a proper web server in front of it.</li>
+  <li>Run <code>python scripts/demo_traffic.py --cleanup</code> after any demonstration so statistics stay real.</li>
+  <li>Back up the <code>smart_waste</code> database (Workbench: <i>Server &rarr; Data Export</i>) and the <code>uploads</code> folder, which holds users' photos.</li>
+</ul>
+
+<h2>6.3 Command cheat sheet</h2>
+<pre>cd C:\SmartWaste                               <span class="c"># go to the project folder</span>
+.\.venv\Scripts\Activate.ps1                   <span class="c"># activate the Python environment</span>
+python serve.py                                <span class="c"># start the app  -&gt; http://localhost:8000</span>
+python scripts/manage_admin.py &lt;email&gt;         <span class="c"># reset an admin password (see Part 4.11 for more options)</span>
+python scripts/demo_traffic.py --count 30      <span class="c"># fill the dashboard with demo activity</span>
+python scripts/demo_traffic.py --cleanup       <span class="c"># remove demo activity</span>
+python -m pytest -q                            <span class="c"># run the automatic tests (optional)</span></pre>
+
+<h2>6.4 More documentation inside the project</h2>
+<table>
+  <tr><td style="width:36%"><code>README.md</code></td><td>Short overview and quick start.</td></tr>
+  <tr><td><code>docs/ARCHITECTURE.md</code></td><td>How the system is built.</td></tr>
+  <tr><td><code>docs/MODEL_REPORT.md</code></td><td>The AI model: data, training, accuracy, limits.</td></tr>
+  <tr><td><code>docs/TESTING.md</code></td><td>Test results.</td></tr>
+  <tr><td><code>docs/REQUIREMENTS_TRACEABILITY.md</code></td><td>Every project requirement and where it is met.</td></tr>
+  <tr><td><code>docs/DEMO_SCRIPT.md</code></td><td>A 10-minute demonstration walkthrough.</td></tr>
+</table>
+
+</body>
+</html>
