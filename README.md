@@ -120,7 +120,15 @@ scripts/        demo traffic, test report and presentation generators
 docs/           documentation, screenshots, presentation
 ```
 
-## Team split (from the requirements)
+## Team
+| Name | Roll number |
+|---|---|
+| Madhuri | 2300032809 |
+| Keerthi | 2300033635 |
+| Sana | 2300033102 |
+| Sandhyana | 2300033182 |
+
+## Suggested work areas (from the requirements)
 Member 1 dataset and CNN (`ml/`), Member 2 frontend (`app/templates`, `app/static`), Member 3 Flask backend and AI
 integration (`app/main.py`, `app/services/classifier.py`), Member 4 MySQL and bin management (`database/`,
 `app/models.py`, `app/services/bins.py`), Member 5 dashboard, analytics, testing (`app/admin.py`, `tests/`).
