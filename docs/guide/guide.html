@@ -76,8 +76,7 @@
 </table>
 
 <div class="box note"><b class="t">The 60-second version</b>
-Install Python and MySQL &rarr; download the project &rarr; run <code>pip install -r requirements.txt</code> &rarr; fill in <code>.env</code> &rarr;
-run <code>python setup_mysql.py</code> and <code>python seed.py</code> &rarr; run <code>python serve.py</code> &rarr; open <code>http://localhost:8000</code>.
+Install <b>Python 3.12</b> &rarr; download the project from GitHub (green <b>Code</b> button &rarr; <b>Download ZIP</b>, then unzip) &rarr; double-click <code>setup_windows.bat</code> and wait &rarr; double-click <code>start_app.bat</code> &rarr; the browser opens <code>http://localhost:8000</code>. The administrator password is printed at the end of the setup. No MySQL is needed for this route.
 Users register on the website. The administrator logs in at <code>/admin/login</code>.</div>
 
 <!-- ============================ PART 1 ============================ -->
@@ -122,8 +121,8 @@ records stored in the database; the system never invents data.</div>
 <p>These steps were written and tested on <b>Windows</b> (commands are for PowerShell). The server computer needs the software below; the people who only <i>use</i> the app need just a web browser.</p>
 <table>
   <tr><th style="width:23%">Software</th><th style="width:16%">Version</th><th style="width:13%">Needed?</th><th>What it is for / where to get it</th></tr>
-  <tr><td><b>Python 3</b> (64-bit)</td><td>3.12 or 3.13</td><td class="yes">Required</td><td>Runs the application and the AI model. <a href="https://www.python.org/downloads/">python.org/downloads</a>. During installation tick <b>"Add python.exe to PATH"</b>.</td></tr>
-  <tr><td><b>MySQL Server</b></td><td>8.x or 9.x</td><td class="yes">Required</td><td>The database that stores users, bins and records. <a href="https://dev.mysql.com/downloads/installer/">dev.mysql.com/downloads/installer</a>. Remember the <b>root password</b> you choose.</td></tr>
+  <tr><td><b>Python 3</b> (64-bit)</td><td>3.10 to 3.13 (3.12 recommended; <b>not</b> 3.14)</td><td class="yes">Required</td><td>Runs the application and the AI model. <a href="https://www.python.org/downloads/">python.org/downloads</a>. During installation tick <b>"Add python.exe to PATH"</b>.</td></tr>
+  <tr><td><b>MySQL Server</b></td><td>8.x or 9.x</td><td>Optional</td><td>Only for the manual MySQL route (section 2.2). The one-click route uses a built-in SQLite database instead. MySQL stores users, bins and records. <a href="https://dev.mysql.com/downloads/installer/">dev.mysql.com/downloads/installer</a>. Remember the <b>root password</b> you choose.</td></tr>
   <tr><td><b>MySQL Workbench</b></td><td>8.x</td><td>Optional</td><td>A window to look inside the database. Comes with the MySQL installer.</td></tr>
   <tr><td><b>Web browser</b></td><td>Edge, Chrome, Firefox</td><td class="yes">Required</td><td>To open the app. Recent version.</td></tr>
   <tr><td><b>Git</b></td><td>any</td><td>Optional</td><td>Only if you download the project from GitHub with <code>git clone</code>. You can also download a ZIP.</td></tr>
@@ -134,7 +133,22 @@ records stored in the database; the system never invents data.</div>
 <p><b>Computer:</b> about 8 GB of RAM recommended (4 GB minimum), and about <b>3 GB of free disk space</b> (the Python packages, including TensorFlow, take about 2.3 GB). An internet connection is needed once, during installation.
 You do <b>not</b> need the image dataset or any AI training: the trained model (<code>ml/model/waste_cnn.keras</code>, 10 MB) is already inside the project.</p>
 
-<h2>2.2 Step-by-step installation</h2>
+<h2>2.1A The fastest way (recommended): one-click setup, no MySQL needed</h2>
+<p>This route was tested from a fresh copy of the project (no environment, no settings file, no database), including in a folder whose name contains a space. It uses a built-in SQLite database, so there is nothing else to install.</p>
+<ol class="steps">
+  <li><b>Install Python 3.12.</b> Download it from <a href="https://www.python.org/downloads/windows/">python.org/downloads/windows</a>, run the installer, tick <b>"Add python.exe to PATH"</b>, click Install.</li>
+  <li><b>Download the project.</b> Open <b>https://github.com/seshasaikrishnachanumolu/AI</b>, click the green <b>Code</b> button, then <b>Download ZIP</b>, and unzip it (right-click &rarr; Extract All). Or with Git:
+    <pre>git clone https://github.com/seshasaikrishnachanumolu/AI.git</pre></li>
+  <li><b>Double-click <code>setup_windows.bat</code></b> in the project folder. It checks your Python, creates a private environment, installs the packages (<b>5 to 15 minutes</b>; the window looks busy, that is normal), creates the settings file, the database, the administrator account, 5 locations and 6 virtual bins.
+    At the end it prints your <b>admin email and admin password</b>. <b>Write them down</b> (they are also saved in the file <code>.env</code>).</li>
+  <li><b>Double-click <code>start_app.bat</code>.</b> After a few seconds your browser opens <b>http://localhost:8000</b>. Keep the black window open while you use the app; close it to stop.</li>
+</ol>
+<div class="box warn"><b class="t">If Windows shows "Windows protected your PC"</b> for the <code>.bat</code> file (common for downloaded files), click <b>More info</b> and then <b>Run anyway</b>. The files are plain text: you can open <code>setup_windows.bat</code> in Notepad and read exactly what it does.</div>
+<div class="box tip"><b class="t">Nothing to type, nothing to edit</b> The setup creates a private random <code>SECRET_KEY</code> and a random admin password for your copy. You can run <code>setup_windows.bat</code> again at any time: it keeps your data and creates nothing twice.
+After this, skip to Part 3 (users) or Part 4 (administrators). Section 2.2 below is only for people who want to use MySQL.</div>
+
+<h2>2.2 Manual installation with MySQL (optional)</h2>
+<p>Use this route only if you want the project to run on a MySQL database (what the original project brief asks for).</p>
 <ol class="steps">
   <li><b>Install Python.</b> Download it, run the installer, tick <b>Add python.exe to PATH</b>, click Install. Check it worked: open PowerShell and type
     <pre>python --version</pre>You should see <code>Python 3.12.x</code> or <code>3.13.x</code>.</li>
@@ -143,7 +157,7 @@ You do <b>not</b> need the image dataset or any AI training: the trained model (
     Let it start MySQL as a Windows service (the default). The service starts automatically whenever Windows starts.</li>
 
   <li><b>Get the project.</b> Put the project folder somewhere simple, for example <code>C:\SmartWaste</code>.
-    <pre>git clone &lt;your-repository-url&gt; C:\SmartWaste</pre>(or unzip the downloaded ZIP into that folder).</li>
+    <pre>git clone https://github.com/seshasaikrishnachanumolu/AI.git C:\SmartWaste</pre>(or unzip the downloaded ZIP into that folder).</li>
 
   <li><b>Open PowerShell inside the project folder.</b> In File Explorer open the folder, click the address bar, type <code>powershell</code> and press Enter. Or:
     <pre>cd C:\SmartWaste</pre></li>
@@ -159,7 +173,7 @@ You do <b>not</b> need the image dataset or any AI training: the trained model (
 
   <li><b>Create your settings file.</b> Copy the example and open it in Notepad:
     <pre>copy .env.example .env
-notepad .env</pre>Edit these lines and save (details in the table below):
+notepad .env</pre>Remove the <code>#</code> in front of the <code>MYSQL_</code> lines, then edit these lines and save (details in the table below):
     <pre>SECRET_KEY=<span class="c">paste-a-long-random-text-here</span>
 MYSQL_USER=root
 MYSQL_PASSWORD=<span class="c">your MySQL root password</span>
@@ -194,7 +208,7 @@ python seed.py</pre>The first creates an empty database called <code>smart_waste
   <tr><td><code>MYSQL_DATABASE</code></td><td>Name of the database to create. Leave as <code>smart_waste</code>.</td></tr>
   <tr><td><code>ADMIN_EMAIL</code> / <code>ADMIN_PASSWORD</code></td><td>The login of the first administrator. <b>Set these before running <code>python seed.py</code> the first time.</b> They are only used when the admin account does not exist yet; editing them afterwards does <b>not</b> change an existing admin (to change a password later, see Part 4.11).</td></tr>
 </table>
-<div class="box note"><b class="t">No MySQL yet? You can still try the app</b> If you delete (or comment out with <code>#</code>) the <code>MYSQL_...</code> lines in <code>.env</code>, the app automatically uses a small built-in SQLite file (<code>instance/waste.db</code>). This is only for a quick look; the real system uses MySQL.</div>
+<div class="box note"><b class="t">SQLite or MySQL?</b> While the <code>MYSQL_...</code> lines in <code>.env</code> start with <code>#</code> (the way <code>.env.example</code> ships), the app uses a small built-in SQLite file (<code>instance/waste.db</code>). That is what the one-click setup uses, and it is fine for trying, learning and demonstrations. Remove the <code>#</code> signs and fill in your password to use MySQL instead.</div>
 
 <h2>2.4 Look inside the database (optional)</h2>
 <p>Open <b>MySQL Workbench</b>, connect to <code>localhost:3306</code> with your root password, and open the schema <code>smart_waste</code>. You will see the seven tables:
@@ -202,7 +216,7 @@ python seed.py</pre>The first creates an empty database called <code>smart_waste
 Right-click a table and choose <i>Select Rows</i> to read it. Please do not edit rows by hand; use the app instead.</p>
 
 <h2>2.5 Use the app from another device on the same Wi-Fi (optional)</h2>
-<p>The server listens on all network cards. Find the server computer's address with <code>ipconfig</code> (the <i>IPv4 Address</i>, for example <code>192.168.1.20</code>) and open
+<p>By default the server accepts connections from <b>this computer only</b>. To allow other devices, close the server, open PowerShell in the project folder and run <code>$env:HOST="0.0.0.0"; .\.venv\Scripts\python serve.py</code> (instead of <code>start_app.bat</code>). Then find the server computer's address with <code>ipconfig</code> (the <i>IPv4 Address</i>, for example <code>192.168.1.20</code>) and open
 <code>http://192.168.1.20:8000</code> on the phone or laptop. Windows may ask to allow Python through the firewall: allow it on <i>Private networks</i> only.
 On a phone, the <b>Choose photo</b> picker normally offers <i>Take photo</i>. The in-page <i>Use webcam</i> button only works on the server computer itself (<code>localhost</code>), because browsers allow camera access only on <code>localhost</code> or HTTPS.
 Use this only on a network you trust.</p>
@@ -300,13 +314,11 @@ There are 12 cards per page; use <b>Newer / Older</b> at the bottom. <b>Only you
 <h2>4.1 How to log in as administrator</h2>
 <ol class="steps">
   <li><b>Open the admin login page:</b> <code>http://localhost:8000/admin/login</code>. You can also click <b>Admin login</b> in the footer of the landing page or on the user login page.</li>
-  <li><b>Enter the administrator email and password.</b> These are the <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code> that were in the <code>.env</code> file when <code>python seed.py</code> was first run.
-    If nobody changed them, the defaults are <b><code>admin@smartwaste.local</code></b> and <b><code>Admin@12345</code></b>.</li>
+  <li><b>Enter the administrator email and password.</b> If you used <code>setup_windows.bat</code>, they were <b>printed at the end of the setup</b> and are saved in the file <code>.env</code> (open it in Notepad: <code>ADMIN_EMAIL</code> and <code>ADMIN_PASSWORD</code>). If you set up manually and kept the example values, they are <b><code>admin@smartwaste.local</code></b> and <b><code>Admin@12345</code></b>.</li>
   <li><b>Click "Sign in to console".</b> You arrive at the <b>Live dashboard</b>.</li>
 </ol>
 <figure class="small"><img src="04_admin_login.png"><figcaption>Admin login.</figcaption></figure>
-<div class="box danger"><b class="t">Change the default password first</b> Anyone who reads this guide knows the default. Change it right away (section 4.11).
-If login fails with "Invalid email or password", the most common reason is that <code>.env</code> was edited <i>after</i> the first seed (that does not change an existing admin), or a normal User account was used (those cannot sign in here).</div>
+<div class="box danger"><b class="t">Keep the administrator password private</b> If you used the example password <code>Admin@12345</code>, change it right away (section 4.11), because it is public. If login fails with "Invalid email or password", the most common reasons are: a normal User account was used (those cannot sign in here), <code>.env</code> was edited <i>after</i> the first setup (that does not change an existing admin), or the password was changed later with <code>manage_admin.py</code>.</div>
 
 <h2>4.2 The administrator menu</h2>
 <table>
@@ -448,6 +460,13 @@ python scripts/demo_traffic.py --cleanup                <span class="c"># remove
 <h2>6.1 Troubleshooting</h2>
 <table>
   <tr><th style="width:33%">What you see</th><th style="width:28%">Likely cause</th><th>What to do</th></tr>
+  <tr><td><code>setup_windows.bat</code> says <b>No suitable Python found</b></td><td>Python missing, too old, too new (3.14) or 32-bit</td><td>Install <b>Python 3.12 (64-bit)</b> from python.org with <b>Add python.exe to PATH</b> ticked, then run <code>setup_windows.bat</code> again.</td></tr>
+  <tr><td>Setup stops while <b>installing packages</b></td><td>Internet interrupted (the download is about 500 MB)</td><td>Run <code>setup_windows.bat</code> again; it continues. If it keeps failing, try another network.</td></tr>
+  <tr><td><code>start_app.bat</code> says <b>not set up yet</b></td><td>Setup has not been run</td><td>Double-click <code>setup_windows.bat</code> first.</td></tr>
+  <tr><td>"Windows protected your PC" when opening a <code>.bat</code> file</td><td>Windows warns about downloaded files</td><td>Click <b>More info</b>, then <b>Run anyway</b>.</td></tr>
+  <tr><td>Browser says <b>"can't connect"</b> or <b>port 8000 already in use</b></td><td>The server window was closed, or another program uses port 8000</td><td>Start <code>start_app.bat</code> again and wait 15 seconds. If the port is busy, in PowerShell run <code>$env:PORT="8001"; .\.venv\Scripts\python serve.py</code> and open <code>http://localhost:8001</code>.</td></tr>
+  <tr><td><code>No module named ...</code></td><td>The command ran with a different Python than the project's</td><td>Use the project's own Python: <code>.\.venv\Scripts\python serve.py</code>.</td></tr>
+  <tr><td>First classification takes 10 to 30 seconds</td><td>The AI model loads on first use</td><td>Normal. Later classifications take under a second.</td></tr>
   <tr><td><code>Access denied for user 'root'</code> when running <code>setup_mysql.py</code></td><td>Wrong <code>MYSQL_PASSWORD</code> in <code>.env</code></td><td>Correct it (same password as Workbench), save, run again.</td></tr>
   <tr><td><code>Can't connect to MySQL server</code></td><td>The MySQL service is not running</td><td>Open <i>Services</i> (Win+R, <code>services.msc</code>), find "MySQL…", click Start. Or, in an Administrator PowerShell: <code>net start MySQL92</code> (the name may be <code>MySQL80</code> or similar).</td></tr>
   <tr><td><code>Unknown database 'smart_waste'</code></td><td>Database not created yet</td><td>Run <code>python setup_mysql.py</code> then <code>python seed.py</code>.</td></tr>
@@ -465,7 +484,7 @@ python scripts/demo_traffic.py --cleanup                <span class="c"># remove
 
 <h2>6.2 Security checklist before real use</h2>
 <ul>
-  <li>Change the default admin password (Part 4.11) and use a strong, unique <code>SECRET_KEY</code>.</li>
+  <li>Never use the public example password <code>Admin@12345</code> (change it, Part 4.11). The one-click setup already generates a random one. Keep <code>SECRET_KEY</code> private.</li>
   <li>Never share or upload the <code>.env</code> file (it contains your MySQL password). It is excluded from Git on purpose.</li>
   <li>Do not expose the app to the public internet without HTTPS and a proper web server in front of it.</li>
   <li>Run <code>python scripts/demo_traffic.py --cleanup</code> after any demonstration so statistics stay real.</li>
@@ -473,7 +492,9 @@ python scripts/demo_traffic.py --cleanup                <span class="c"># remove
 </ul>
 
 <h2>6.3 Command cheat sheet</h2>
-<pre>cd C:\SmartWaste                               <span class="c"># go to the project folder</span>
+<pre>setup_windows.bat                              <span class="c"># one-time setup (double-click it)</span>
+start_app.bat                                  <span class="c"># start the app (double-click it)</span>
+cd C:\SmartWaste                               <span class="c"># go to the project folder</span>
 .\.venv\Scripts\Activate.ps1                   <span class="c"># activate the Python environment</span>
 python serve.py                                <span class="c"># start the app  -&gt; http://localhost:8000</span>
 python scripts/manage_admin.py &lt;email&gt;         <span class="c"># reset an admin password (see Part 4.11 for more options)</span>
